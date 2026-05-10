@@ -1,0 +1,2691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2CASES</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a18;--panel:#111128;--border:rgba(79,156,249,.15);
+  --gold:#e2b04a;--gold2:#f5d06a;--blue:#4f9cf9;--green:#4caf50;
+  --red:#e84040;--pink:#e040fb;--orange:#ff9800;--jp:#ff6b35;
+  --text:#e0e0e0;--dim:#8a8aaa;
+}
+html,body{height:100%;font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+button{font-family:'Rajdhani',sans-serif;cursor:pointer;}
+select,input{font-family:'Rajdhani',sans-serif;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:rgba(79,156,249,.3);}
+
+
+/* ── HEADER BAR ── */
+.hdr-bar{display:flex;align-items:center;gap:14px;padding:12px 18px;background:rgba(10,10,24,.95);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;flex-wrap:wrap;backdrop-filter:blur(10px);}
+.hdr-bal{display:flex;flex-direction:column;}
+.hdr-bal-lbl{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
+.hdr-bal-num{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--gold2);}
+.hdr-keys{font-size:12px;color:var(--dim);margin-right:4px;}
+.hdr-keys span{color:var(--gold);font-weight:700;}
+.hdr-btns{display:flex;gap:6px;margin-left:auto;}
+.hdr-btn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;border:1px solid;transition:.15s;cursor:pointer;}
+.hdr-add{background:rgba(76,175,80,.1);border-color:var(--green);color:var(--green);}
+.hdr-add:hover{background:rgba(76,175,80,.25);}
+.hdr-rst{background:rgba(232,64,64,.08);border-color:var(--red);color:var(--red);}
+.hdr-rst:hover{background:rgba(232,64,64,.2);}
+
+/* ── LAYOUT ── */
+.wrap{display:flex;min-height:100vh;}
+.sidebar{width:250px;flex-shrink:0;background:rgba(10,10,24,.97);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.content{flex:1;overflow-y:auto;}
+@media(max-width:700px){.sidebar{display:none;}.mob-bar{display:flex !important;}}
+
+/* ── SIDEBAR ── */
+.logo{padding:18px 16px 14px;font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--gold);letter-spacing:3px;border-bottom:1px solid var(--border);}
+.logo b{color:var(--blue);}
+.bal-box{margin:10px 8px;padding:12px;background:rgba(226,176,74,.06);border:1px solid rgba(226,176,74,.2);border-radius:8px;}
+.bal-num{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;color:var(--gold2);}
+.bal-keys{font-size:12px;color:var(--dim);margin:3px 0 8px;}
+.bal-keys span{color:var(--gold);font-weight:700;}
+.bal-row{display:flex;gap:5px;margin-top:8px;}
+.bal-row{display:flex;gap:5px;}
+.sb{flex:1;padding:6px 4px;border-radius:4px;font-size:12px;font-weight:700;border:1px solid;transition:.15s;}
+.sb-g{background:rgba(76,175,80,.1);border-color:var(--green);color:var(--green);}
+.sb-g:hover{background:rgba(76,175,80,.25);}
+.sb-r{background:rgba(232,64,64,.08);border-color:var(--red);color:var(--red);}
+.sb-r:hover{background:rgba(232,64,64,.2);}
+.nav-sec{padding:4px 12px 2px;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:6px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;margin:1px 6px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;border:1px solid transparent;transition:.15s;color:var(--dim);}
+.nav-item:hover{background:rgba(79,156,249,.07);color:var(--text);}
+.nav-item.active{background:rgba(79,156,249,.1);border-color:rgba(79,156,249,.25);color:var(--blue);}
+.feed-box{margin:8px;flex:1;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:7px;overflow:hidden;min-height:0;display:flex;flex-direction:column;}
+.feed-hd{padding:6px 10px;font-size:9px;letter-spacing:3px;color:var(--dim);display:flex;align-items:center;gap:5px;background:rgba(79,156,249,.04);}
+.fdot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);animation:fp 1.4s ease-in-out infinite;}
+@keyframes fp{0%,100%{opacity:1;}50%{opacity:.3;}}
+.feed-list{overflow-y:auto;padding:4px;display:flex;flex-direction:column;gap:3px;max-height:180px;}
+.feed-row{padding:5px 7px;border-radius:4px;font-size:10px;line-height:1.3;border-left:2px solid;animation:fslide .3s ease;}
+@keyframes fslide{from{transform:translateX(-6px);opacity:0;}to{transform:none;opacity:1;}}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:8px;border-top:1px solid var(--border);}
+.mc{background:rgba(79,156,249,.03);border:1px solid var(--border);border-radius:5px;padding:6px;text-align:center;}
+.mc-v{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold2);}
+.mc-l{font-size:8px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;}
+
+/* ── MOBILE NAV ── */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,24,.97);border-top:1px solid var(--border);z-index:200;padding:6px 2px;}
+.mb{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;cursor:pointer;color:var(--dim);font-size:10px;font-weight:700;background:none;border:none;transition:.15s;}
+.mb.active{color:var(--blue);}
+.mb-ic{font-size:18px;}
+
+/* ── PAGES ── */
+.page{display:none;padding:22px 18px 80px;}
+.page.active{display:block;}
+.pg-title{font-family:'Orbitron',monospace;font-size:19px;font-weight:900;color:#fff;margin-bottom:4px;}
+.pg-sub{font-size:13px;color:var(--dim);margin-bottom:20px;}
+.sec{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
+
+/* ── CASES GRID ── */
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:20px;}
+.cc{background:linear-gradient(160deg,#13132a,#0f1e3a);border:2px solid rgba(79,156,249,.1);border-radius:9px;padding:12px 8px;cursor:pointer;text-align:center;transition:.2s;position:relative;overflow:hidden;}
+.cc:hover{transform:translateY(-2px);border-color:rgba(79,156,249,.4);box-shadow:0 8px 20px rgba(0,0,0,.3);}
+.cc.active{border-color:var(--gold) !important;background:rgba(226,176,74,.05);}
+.cc.jp-case{border-color:rgba(255,107,53,.2);}
+.jp-tag{position:absolute;top:4px;right:4px;background:linear-gradient(135deg,#7b2d00,var(--jp));color:#fff;font-size:7px;font-weight:700;padding:1px 5px;border-radius:8px;}
+.cc-em{font-size:40px;display:block;margin-bottom:5px;}
+.cc-nm{font-size:11px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.2;}
+.cc-pr{font-size:13px;font-weight:700;color:var(--gold);}
+
+/* ── OPENER ── */
+.opener{background:linear-gradient(160deg,rgba(15,32,64,.35),rgba(10,10,22,.5));border:1px solid rgba(79,156,249,.15);border-radius:11px;padding:20px;margin-bottom:18px;}
+
+/* ── 3D CASE ── */
+.scene-wrap{display:flex;flex-direction:column;align-items:center;padding:16px 0 20px;}
+.scene{perspective:900px;width:180px;height:180px;position:relative;}
+.c3d{width:180px;height:180px;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.34,1.56,.64,1);cursor:pointer;}
+.c3d:hover:not(.anim){transform:rotateY(12deg) rotateX(-5deg) scale(1.04);}
+.cf{position:absolute;inset:0;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;}
+.cf-front{background:linear-gradient(145deg,#1a2a4a,#0f1e3a);border:2px solid rgba(79,156,249,.35);box-shadow:0 0 24px rgba(79,156,249,.12);}
+.cf-shine{position:absolute;top:6px;left:6px;right:6px;height:35%;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent);border-radius:8px 8px 50% 50%;pointer-events:none;}
+.c-glow{position:absolute;inset:-14px;border-radius:24px;background:radial-gradient(ellipse,rgba(79,156,249,.1),transparent 70%);pointer-events:none;animation:cgp 2s ease-in-out infinite;}
+@keyframes cgp{0%,100%{opacity:.5;}50%{opacity:1;}}
+.c-em{font-size:64px;filter:drop-shadow(0 4px 10px rgba(79,156,249,.35));z-index:1;}
+.c-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:rgba(79,156,249,.7);margin-top:5px;z-index:1;}
+.c-slot{position:absolute;bottom:14px;width:32px;height:12px;background:rgba(0,0,0,.5);border:1px solid rgba(226,176,74,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.c-hole{width:5px;height:5px;background:rgba(0,0,0,.8);border-radius:50%;border:1px solid rgba(226,176,74,.25);}
+/* LID */
+.c-lid{position:absolute;width:180px;height:56px;top:0;left:0;transform-style:preserve-3d;transform-origin:bottom center;transition:transform 1.1s cubic-bezier(.34,1.56,.64,1);z-index:10;}
+.lid-f{position:absolute;inset:0;background:linear-gradient(145deg,#1e3460,#152850);border:2px solid rgba(79,156,249,.45);border-radius:12px 12px 0 0;}
+.c-lid.open{transform:rotateX(-128deg);}
+/* KEY */
+.key-el{position:absolute;font-size:28px;left:50%;top:-60px;transform:translateX(-50%);opacity:0;pointer-events:none;z-index:20;filter:drop-shadow(0 0 8px rgba(226,176,74,.8));}
+.key-el.drop{animation:kdrop .7s cubic-bezier(.34,1.56,.64,1) forwards;}
+.key-el.insert{animation:kins .4s ease-in forwards;}
+@keyframes kdrop{0%{top:-60px;opacity:0;transform:translateX(-50%) rotate(-20deg) scale(.5);}60%{top:76px;opacity:1;transform:translateX(-50%) rotate(5deg) scale(1.1);}100%{top:70px;opacity:1;transform:translateX(-50%) rotate(0) scale(1);}}
+@keyframes kins{0%{top:70px;opacity:1;}100%{top:96px;opacity:0;transform:translateX(-50%) scale(.3);}}
+@keyframes shake{0%,100%{transform:none;}15%{transform:translateX(-6px) rotateZ(-2deg);}30%{transform:translateX(6px) rotateZ(2deg);}45%{transform:translateX(-4px);}60%{transform:translateX(4px);}75%{transform:translateX(-2px);}90%{transform:translateX(2px);}}
+.shaking{animation:shake .65s ease forwards;}
+.case-meta{text-align:center;margin-top:10px;}
+.case-meta-name{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:#fff;}
+.case-meta-price{font-size:22px;font-weight:700;color:var(--gold2);margin-top:3px;}
+.jp-notice{display:none;margin-top:6px;padding:4px 10px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.35);border-radius:4px;font-size:11px;color:var(--jp);font-weight:700;letter-spacing:1px;display:inline-block;}
+
+/* ── KEY PANEL ── */
+.kp{background:rgba(226,176,74,.05);border:1px solid rgba(226,176,74,.18);border-radius:8px;padding:12px 14px;margin-bottom:14px;}
+.kp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.kp-l{display:flex;align-items:center;gap:8px;}
+.kp-ic{font-size:26px;filter:drop-shadow(0 0 6px rgba(226,176,74,.5));}
+.kp-title{font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);}
+.kp-cnt{font-size:12px;color:var(--dim);margin-top:2px;}
+.kp-cnt b{color:var(--gold2);font-size:15px;}
+.kp-btns{display:flex;gap:5px;flex-wrap:wrap;}
+.kb{background:rgba(226,176,74,.08);border:1px solid rgba(226,176,74,.3);color:var(--gold2);padding:6px 11px;border-radius:5px;font-size:12px;font-weight:700;transition:.15s;white-space:nowrap;}
+.kb:hover{background:rgba(226,176,74,.18);transform:scale(1.03);}
+.kp-note{font-size:10px;color:var(--dim);margin-top:7px;}
+
+/* ── QTY ── */
+.qty-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.qty-lbl{font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
+.qty-btns{display:flex;gap:4px;}
+.qb{background:rgba(79,156,249,.07);border:1px solid rgba(79,156,249,.2);border-radius:4px;color:var(--text);padding:5px 12px;font-size:14px;font-weight:700;transition:.15s;}
+.qb:hover,.qb.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+/* ── REEL ── */
+.reel-wrap{position:relative;overflow:hidden;border-radius:7px;margin-bottom:16px;height:148px;border:2px solid rgba(79,156,249,.2);background:rgba(0,0,0,.45);display:none;}
+.reel-wrap.show{display:block;}
+.rfl{position:absolute;top:0;bottom:0;width:100px;z-index:5;pointer-events:none;}
+.rfl.l{left:0;background:linear-gradient(90deg,rgba(0,0,0,.85),transparent);}
+.rfl.r{right:0;background:linear-gradient(-90deg,rgba(0,0,0,.85),transparent);}
+.reel-mark{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:3px;background:var(--gold);z-index:10;box-shadow:0 0 12px var(--gold);}
+.reel-mark::before{content:'▼';position:absolute;top:-15px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:12px;}
+.reel-mark::after{content:'▲';position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:12px;}
+.reel-track{display:flex;height:100%;align-items:center;will-change:transform;}
+.ri{min-width:132px;height:136px;margin:0 2px;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.07);flex-shrink:0;position:relative;overflow:hidden;}
+.ri::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent);}
+.ri-em{font-size:38px;z-index:1;}
+.ri-nm{font-size:9px;font-weight:700;text-align:center;z-index:1;margin-top:3px;padding:0 4px;line-height:1.2;}
+.ri-wr{font-size:8px;color:rgba(255,255,255,.35);z-index:1;margin-top:1px;}
+.r-consumer{background:linear-gradient(160deg,#1a2830,#243640);border-color:#b0bec5 !important;}
+.r-industrial{background:linear-gradient(160deg,#1a2535,#253245);border-color:#78909c !important;}
+.r-milspec{background:linear-gradient(160deg,#1a2550,#1e3575);border-color:#4f9cf9 !important;}
+.r-restricted{background:linear-gradient(160deg,#2a1548,#3e2075);border-color:#9c27b0 !important;}
+.r-classified{background:linear-gradient(160deg,#3a1042,#5e1e70);border-color:#e040fb !important;}
+.r-covert{background:linear-gradient(160deg,#3c0f0f,#701515);border-color:#e84040 !important;}
+.r-gold{background:linear-gradient(160deg,#3a2804,#6e4e06);border-color:#e2b04a !important;}
+.r-jackpot{background:linear-gradient(160deg,#3a1800,#7a3500);border-color:#ff6b35 !important;}
+
+/* ── MULTI RESULTS ── */
+.multi-res{display:none;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;}
+.multi-res.show{display:flex;}
+.mr{background:rgba(19,19,43,.8);border-radius:7px;padding:10px;text-align:center;width:115px;border:2px solid;position:relative;animation:popin .3s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes popin{from{transform:scale(.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mr-em{font-size:30px;display:block;margin-bottom:2px;}
+.mr-nm{font-size:9px;font-weight:700;line-height:1.2;}
+.mr-vl{font-size:11px;color:var(--gold);font-weight:700;margin-top:2px;}
+
+/* ── OPEN BTN ── */
+.open-btn{width:100%;background:linear-gradient(135deg,#1a4c90,#2d72d8,#1a4c90);border:2px solid var(--blue);color:#fff;padding:17px;border-radius:8px;font-family:'Orbitron',monospace;font-size:14px;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:.2s;position:relative;overflow:hidden;box-shadow:0 6px 22px rgba(79,156,249,.2);}
+.open-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 35%,rgba(255,255,255,.07) 50%,transparent 65%);transform:translateX(-100%);transition:.5s;}
+.open-btn:hover::before{transform:translateX(100%);}
+.open-btn:hover{border-color:var(--gold);box-shadow:0 0 30px rgba(226,176,74,.3);color:var(--gold2);}
+.open-btn:disabled{opacity:.35;cursor:not-allowed;}
+.open-btn.jp{background:linear-gradient(135deg,#7b2d00,#cc5500,#7b2d00);border-color:var(--jp);}
+
+/* ── WIN OVERLAY ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.ov.show{opacity:1;pointer-events:auto;}
+.ov-card{background:linear-gradient(160deg,#13132b,#0f2040);border-radius:16px;padding:36px;text-align:center;max-width:420px;width:90%;border:2px solid rgba(226,176,74,.2);transform:scale(.5) rotate(-8deg);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 60px rgba(226,176,74,.1);position:relative;overflow:hidden;}
+.ov.show .ov-card{transform:scale(1) rotate(0);}
+.ov-card.jp-card{border-color:rgba(255,107,53,.5);box-shadow:0 0 80px rgba(255,107,53,.25);background:linear-gradient(160deg,#1a0f00,#2a1500);}
+.ov-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:16px;}
+.op{position:absolute;border-radius:3px;animation:opfly var(--d) ease-out var(--dd) forwards;}
+@keyframes opfly{0%{transform:translate(0,0) rotate(0) scale(1);opacity:1;}100%{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(0);opacity:0;}}
+.ov-badge{display:inline-block;padding:3px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;border:1px solid;}
+.ov-crown{font-size:30px;display:block;margin-bottom:6px;animation:cb .7s ease infinite alternate;}
+@keyframes cb{from{transform:scale(1);}to{transform:scale(1.12) rotate(5deg);}}
+.ov-icon{font-size:84px;display:block;margin-bottom:10px;animation:ifl 2s ease-in-out infinite;}
+@keyframes ifl{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+.ov-name{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;margin-bottom:5px;line-height:1.3;}
+.ov-wear{font-size:13px;color:var(--dim);margin-bottom:3px;}
+.ov-float{font-size:11px;color:var(--dim);background:rgba(255,255,255,.04);border-radius:3px;padding:2px 10px;display:inline-block;margin-bottom:12px;}
+.ov-val{font-size:26px;font-weight:700;color:var(--gold2);margin-bottom:18px;}
+.ov-val.jp{color:var(--jp);animation:vp .9s ease-in-out infinite alternate;}
+@keyframes vp{from{transform:scale(1);}to{transform:scale(1.05);}}
+.ov-st{display:inline-block;background:rgba(255,165,0,.1);border:1px solid orange;color:orange;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:2px;margin-bottom:7px;}
+.ov-btns{display:flex;gap:10px;justify-content:center;}
+.ov-btn{padding:10px 24px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:1px;border:1px solid;transition:.2s;}
+.ob-sell{background:linear-gradient(135deg,#1a5a1a,#2d9a2d);border-color:var(--green);color:#fff;}
+.ob-sell:hover{filter:brightness(1.3);transform:scale(1.04);}
+.ob-keep{background:rgba(79,156,249,.1);border-color:var(--blue);color:var(--blue);}
+.ob-keep:hover{background:rgba(79,156,249,.25);transform:scale(1.04);}
+/* JP rays */
+.jp-rays-wrap{position:absolute;inset:0;overflow:hidden;border-radius:16px;pointer-events:none;display:none;}
+.jp-rays-wrap.show{display:block;}
+.jpr{position:absolute;top:50%;left:50%;width:2px;height:150%;background:linear-gradient(transparent,rgba(255,107,53,.15),transparent);transform-origin:top center;animation:rrot 4s linear infinite;}
+@keyframes rrot{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+
+/* ── CHANCES ── */
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:5px;margin-bottom:20px;}
+.ch-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(0,0,0,.2);border-radius:4px;border-left:3px solid;}
+.ch-nm{font-size:12px;font-weight:700;}
+.ch-pc{font-size:12px;color:var(--dim);}
+
+/* ── TRADE UP ── */
+.tu-wrap{display:grid;grid-template-columns:1fr 44px 1fr;gap:14px;align-items:start;}
+.tu-panel{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;padding:12px;}
+.tu-ttl{font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
+.tu-pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:5px;min-height:90px;}
+.tp{background:rgba(19,19,43,.7);border-radius:5px;padding:6px;text-align:center;cursor:pointer;border:1px solid;transition:.15s;}
+.tp:hover{transform:scale(1.05);}
+.tp-em{font-size:22px;display:block;}
+.tp-nm{font-size:8px;font-weight:700;line-height:1.1;margin-top:2px;}
+.tp-vl{font-size:8px;color:var(--gold);}
+.tu-slots{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px;}
+.slot{background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.1);border-radius:5px;height:58px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;position:relative;font-size:20px;color:rgba(255,255,255,.2);}
+.slot:hover{border-color:rgba(232,64,64,.4);}
+.slot.filled{border-style:solid;}
+.slot-x{position:absolute;top:-3px;right:-3px;width:12px;height:12px;background:var(--red);border-radius:50%;font-size:8px;align-items:center;justify-content:center;color:#fff;display:none;}
+.slot.filled:hover .slot-x{display:flex;}
+.tu-info{background:rgba(226,176,74,.04);border:1px solid rgba(226,176,74,.12);border-radius:5px;padding:8px;text-align:center;margin-bottom:8px;font-size:11px;color:var(--dim);}
+.tu-info b{color:var(--gold2);}
+.tu-btn{width:100%;background:linear-gradient(135deg,#3a2800,#7a5500);border:1px solid var(--gold);color:var(--gold2);padding:10px;border-radius:5px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;transition:.2s;}
+.tu-btn:hover{filter:brightness(1.3);}
+.tu-btn:disabled{opacity:.35;cursor:not-allowed;}
+.tu-arr{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding-top:32px;font-size:22px;color:var(--dim);}
+.tu-cnt-wrap{font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);text-align:center;}
+.tu-cnt-wrap b{color:var(--gold2);font-size:15px;}
+
+/* ── BATTLE ── */
+.bt-wrap{display:grid;grid-template-columns:1fr 64px 1fr;gap:14px;align-items:start;}
+.bp{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
+.bp-nm{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;margin-bottom:2px;}
+.bp-cost{font-size:12px;color:var(--gold);margin-bottom:12px;}
+.bp-items{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;min-height:80px;margin-bottom:10px;}
+.bi{background:rgba(19,19,43,.7);border-radius:4px;padding:5px;text-align:center;border:1px solid;animation:popin .3s ease;}
+.bi-em{font-size:22px;display:block;}
+.bi-nm{font-size:8px;font-weight:700;line-height:1.1;}
+.bi-vl{font-size:8px;color:var(--gold);}
+.bp-total{font-family:'Orbitron',monospace;font-size:17px;font-weight:700;color:var(--gold2);}
+.bp-result{font-size:16px;font-weight:700;padding:4px 10px;border-radius:4px;margin-top:6px;display:none;}
+.bp-result.win{display:block;background:rgba(76,175,80,.15);border:1px solid var(--green);color:var(--green);}
+.bp-result.lose{display:block;background:rgba(232,64,64,.15);border:1px solid var(--red);color:var(--red);}
+.bp-result.tie{display:block;background:rgba(255,165,0,.15);border:1px solid orange;color:orange;}
+.bvs{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding-top:24px;}
+.bvs-txt{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--dim);}
+.b-sel-lbl{font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
+.b-sel select{background:rgba(0,0,0,.4);border:1px solid rgba(79,156,249,.2);color:var(--text);padding:7px 10px;border-radius:5px;font-size:12px;font-weight:700;width:100%;margin-bottom:8px;}
+.rounds{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;justify-content:center;}
+.rb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:4px;color:var(--dim);padding:5px 10px;font-size:12px;font-weight:700;transition:.15s;}
+.rb:hover,.rb.active{background:var(--red);border-color:var(--red);color:#fff;}
+.battle-btn{width:100%;background:linear-gradient(135deg,#500,#b00);border:2px solid var(--red);color:#fff;padding:12px;border-radius:7px;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px;transition:.2s;}
+.battle-btn:hover{box-shadow:0 0 22px rgba(232,64,64,.4);}
+.battle-btn:disabled{opacity:.35;cursor:not-allowed;}
+
+/* ── SKIN INSPECT ── */
+.inspect-ov{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.inspect-ov.show{opacity:1;pointer-events:auto;}
+.inspect-card{background:linear-gradient(160deg,#0d0d1e,#0a1428);border:1px solid rgba(255,255,255,.1);border-radius:20px;width:92%;max-width:480px;position:relative;overflow:hidden;transform:scale(.88) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.inspect-ov.show .inspect-card{transform:scale(1) translateY(0);}
+.inspect-bg{position:absolute;inset:0;opacity:.04;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,white,transparent 70%);}
+.inspect-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:50%;width:30px;height:30px;color:var(--text);font-size:14px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.inspect-close:hover{background:rgba(232,64,64,.3);border-color:var(--red);}
+.inspect-body{display:flex;flex-direction:column;align-items:center;padding:28px 24px 24px;}
+.inspect-icon-wrap{position:relative;margin-bottom:16px;}
+.inspect-icon{font-size:96px;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.6));animation:inspFloat 3s ease-in-out infinite;text-align:center;}
+@keyframes inspFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-12px) rotate(2deg);}}
+.inspect-glow{position:absolute;inset:-20px;border-radius:50%;filter:blur(30px);opacity:.25;pointer-events:none;}
+.inspect-info{width:100%;text-align:center;}
+.inspect-badges{display:flex;justify-content:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.insp-badge{font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:2px;border:1px solid;}
+.inspect-name{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;margin-bottom:4px;line-height:1.3;}
+.inspect-rarity{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;opacity:.7;}
+.inspect-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:18px;width:100%;}
+.istat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:10px;}
+.istat-lbl{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
+.istat-val{font-size:15px;font-weight:700;color:var(--text);}
+.inspect-float-section{width:100%;margin-bottom:18px;}
+.inspect-float-label{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
+.inspect-float-bar-wrap{display:flex;align-items:center;gap:10px;}
+.inspect-float-bar{flex:1;height:12px;border-radius:6px;overflow:hidden;display:flex;position:relative;border:1px solid rgba(255,255,255,.1);}
+.ifz{height:100%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:rgba(0,0,0,.6);}
+.inspect-float-needle{position:absolute;top:-4px;bottom:-4px;width:3px;background:#fff;border-radius:2px;box-shadow:0 0 8px rgba(255,255,255,.8);transition:left .6s cubic-bezier(.34,1.56,.64,1);}
+.inspect-float-num{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold2);white-space:nowrap;min-width:56px;}
+.inspect-actions{display:flex;gap:8px;width:100%;flex-wrap:wrap;}
+.inspect-btn{flex:1;padding:11px 8px;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;border:1px solid;min-width:80px;}
+.inspect-sell-btn{background:linear-gradient(135deg,rgba(76,175,80,.15),rgba(76,175,80,.08));border-color:rgba(76,175,80,.4);color:var(--green);}
+.inspect-sell-btn:hover{background:rgba(76,175,80,.25);}
+.inspect-list-btn{background:linear-gradient(135deg,rgba(79,156,249,.15),rgba(79,156,249,.08));border-color:rgba(79,156,249,.4);color:var(--blue);}
+.inspect-list-btn:hover{background:rgba(79,156,249,.25);}
+.inspect-close-btn{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:var(--dim);}
+.inspect-close-btn:hover{background:rgba(255,255,255,.1);color:var(--text);}
+
+/* ── MARKET NOTIF STACK ── */
+.mkt-notif-stack{position:fixed;bottom:80px;left:16px;display:flex;flex-direction:column-reverse;gap:7px;z-index:1100;pointer-events:none;max-width:280px;}
+@media(min-width:701px){.mkt-notif-stack{bottom:20px;}}
+.mkt-notif{background:rgba(13,13,26,.97);border:1px solid rgba(79,156,249,.2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;pointer-events:auto;transform:translateX(-120%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(0,0,0,.4);}
+.mkt-notif.show{transform:translateX(0);}
+.mkt-notif.sold{border-color:rgba(76,175,80,.4);background:rgba(10,26,10,.97);}
+.mkt-notif.bought{border-color:rgba(79,156,249,.3);}
+.mkt-notif.listed{border-color:rgba(226,176,74,.3);}
+.mn-icon{font-size:24px;flex-shrink:0;}
+.mn-body{flex:1;min-width:0;}
+.mn-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.mn-msg{font-size:11px;color:var(--text);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mn-price{font-size:13px;font-weight:700;color:var(--gold2);white-space:nowrap;}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-ov.show{opacity:1;pointer-events:auto;}
+.modal-card{background:linear-gradient(160deg,#13132b,#0f2040);border:1px solid rgba(79,156,249,.25);border-radius:14px;padding:28px;width:90%;max-width:380px;transform:scale(.85);transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+.modal-ov.show .modal-card{transform:scale(1);}
+.modal-title{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:#fff;margin-bottom:18px;text-align:center;}
+.modal-item-preview{display:flex;align-items:center;gap:14px;background:rgba(0,0,0,.3);border-radius:9px;padding:14px;margin-bottom:16px;}
+.mip-icon{font-size:44px;flex-shrink:0;}
+.mip-info{flex:1;}
+.mip-name{font-size:14px;font-weight:700;margin-bottom:2px;}
+.mip-wear{font-size:11px;color:var(--dim);}
+.mip-price{font-size:20px;font-weight:700;color:var(--gold2);margin-top:4px;}
+.mip-seller{font-size:11px;color:var(--dim);margin-top:2px;}
+.modal-info{font-size:12px;color:var(--dim);text-align:center;margin-bottom:16px;line-height:1.5;}
+.modal-info b{color:var(--gold2);}
+.modal-btns{display:flex;gap:10px;}
+.modal-btn{flex:1;padding:12px;border-radius:7px;font-size:14px;font-weight:700;letter-spacing:.5px;border:1px solid;transition:.15s;cursor:pointer;}
+.modal-confirm{background:linear-gradient(135deg,#1a5a1a,#2d9a2d);border-color:var(--green);color:#fff;}
+.modal-confirm:hover{filter:brightness(1.2);}
+.modal-cancel{background:rgba(232,64,64,.1);border-color:var(--red);color:var(--red);}
+.modal-cancel:hover{background:rgba(232,64,64,.2);}
+
+/* SELL PRICE */
+.modal-price-row{margin-bottom:16px;}
+.modal-price-lbl{font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
+.modal-price-opts{display:flex;gap:8px;margin-bottom:12px;}
+.price-preset{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:8px 4px;cursor:pointer;font-size:11px;font-weight:700;color:var(--text);text-align:center;transition:.15s;line-height:1.4;}
+.price-preset small{color:var(--gold);font-size:11px;font-weight:700;}
+.price-preset:hover{background:rgba(79,156,249,.1);border-color:var(--blue);}
+.price-preset.active{background:rgba(79,156,249,.15);border-color:var(--blue);color:var(--blue);}
+.modal-price-input-row{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.3);border:1px solid rgba(79,156,249,.3);border-radius:7px;padding:10px 14px;}
+.modal-price-dollar{font-size:18px;font-weight:700;color:var(--gold);}
+.modal-price-input{background:none;border:none;outline:none;color:var(--gold2);font-size:20px;font-weight:700;font-family:'Rajdhani',sans-serif;width:100%;}
+.modal-price-note{font-size:11px;color:var(--dim);margin-top:8px;text-align:center;}
+
+/* SALE NOTIFICATION */
+.sale-notif{position:fixed;top:80px;right:20px;background:linear-gradient(135deg,#0a2a0a,#0f3a0f);border:2px solid var(--green);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:1200;max-width:300px;transform:translateX(130%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(76,175,80,.3);}
+.sale-notif.show{transform:translateX(0);}
+.sale-notif-icon{font-size:32px;animation:coinSpin .6s ease infinite alternate;}
+@keyframes coinSpin{from{transform:rotateY(0);}to{transform:rotateY(30deg);}}
+.sale-notif-title{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--green);letter-spacing:1px;}
+.sale-notif-msg{font-size:12px;color:var(--text);margin-top:3px;}
+.sale-notif-body{flex:1;}
+.sale-notif-close{background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
+.sale-notif-close:hover{color:var(--text);}
+@media(max-width:700px){.sale-notif{top:auto;bottom:75px;right:10px;}}
+
+/* ── MARKET REDESIGN ── */
+/* TABS */
+.mkt-tabs{display:flex;gap:0;margin-bottom:20px;background:rgba(0,0,0,.25);border-radius:10px;padding:4px;border:1px solid rgba(255,255,255,.06);}
+.mkt-tab-btn{flex:1;padding:9px 8px;border-radius:7px;border:none;background:transparent;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;letter-spacing:.5px;}
+.mkt-tab-btn:hover{color:var(--text);}
+.mkt-tab-btn.active{background:rgba(79,156,249,.18);color:var(--blue);box-shadow:0 0 12px rgba(79,156,249,.15);}
+
+/* LIVE TICKER */
+.mkt-ticker-wrap{display:flex;align-items:center;gap:10px;background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.18);border-radius:8px;padding:8px 14px;margin-bottom:16px;overflow:hidden;}
+.mkt-ticker-lbl{font-size:9px;font-weight:700;color:var(--red);letter-spacing:2px;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.mkt-ticker-lbl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 6px var(--red);animation:fp 1s ease-in-out infinite;display:inline-block;}
+.mkt-ticker{flex:1;overflow:hidden;white-space:nowrap;font-size:11px;color:var(--text);}
+.mkt-ticker-inner{display:inline-block;animation:ticker 30s linear infinite;}
+@keyframes ticker{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
+.mkt-ticker-inner span{margin-right:48px;}
+
+/* FILTERS */
+.mkt-filter-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.mkt-search-wrap{flex:1;min-width:140px;position:relative;}
+.mkt-search-wrap::before{content:"🔍";position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;}
+.mkt-search{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);padding:9px 12px 9px 34px;font-size:13px;font-family:'Rajdhani',sans-serif;transition:.2s;}
+.mkt-search:focus{outline:none;border-color:var(--blue);background:rgba(79,156,249,.06);}
+.mkt-filter-sel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);padding:9px 10px;font-size:12px;font-weight:700;font-family:'Rajdhani',sans-serif;cursor:pointer;transition:.2s;}
+.mkt-filter-sel:focus{outline:none;border-color:var(--blue);}
+.mkt-count-badge{background:rgba(79,156,249,.12);border:1px solid rgba(79,156,249,.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--blue);white-space:nowrap;}
+
+/* GRID + NAV */
+.mkt-grid-area{margin-bottom:8px;}
+.mkt-slider-track{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:500px){.mkt-slider-track{grid-template-columns:repeat(2,1fr);gap:8px;}}
+.mkt-nav-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0 4px;}
+.mkt-page-info{font-size:12px;color:var(--dim);font-weight:700;min-width:56px;text-align:center;}
+.mkt-nav-btn{display:flex;align-items:center;gap:5px;background:rgba(79,156,249,.08);border:1px solid rgba(79,156,249,.2);color:var(--blue);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Rajdhani',sans-serif;}
+.mkt-nav-btn:hover:not(:disabled){background:rgba(79,156,249,.2);transform:scale(1.03);}
+.mkt-nav-btn:disabled{opacity:.2;cursor:not-allowed;}
+.mkt-dots{display:flex;justify-content:center;gap:5px;margin-top:8px;}
+.mkt-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.12);cursor:pointer;transition:.2s;}
+.mkt-dot.active{background:var(--blue);box-shadow:0 0 5px var(--blue);}
+
+/* HIDDEN LEGACY ARROWS */
+.mkt-slider-wrap{position:relative;display:flex;align-items:center;gap:6px;margin-bottom:0;}
+.mkt-slider-viewport{flex:1;overflow:hidden;}
+.mkt-arrow{display:none;}
+
+/* CARD */
+.mkt-card{background:rgba(13,13,26,.9);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 12px 12px;position:relative;overflow:hidden;transition:all .2s;cursor:default;}
+.mkt-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.mkt-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.mkt-card.is-new{animation:cardIn .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes cardIn{from{transform:scale(.88);opacity:0;}to{transform:none;opacity:1;}}
+.mc-tags{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:3px;align-items:flex-end;}
+.mc-tag{font-size:7px;font-weight:700;padding:2px 5px;border-radius:3px;letter-spacing:1px;}
+.mc-tag-bot{background:rgba(79,156,249,.12);border:1px solid rgba(79,156,249,.3);color:var(--blue);}
+.mc-tag-st{background:rgba(255,165,0,.12);border:1px solid rgba(255,165,0,.4);color:orange;}
+.mc-icon-wrap{text-align:center;padding:10px 0 6px;}
+.mc-icon-big{font-size:44px;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5));}
+.mc-name{font-size:12px;font-weight:700;text-align:center;line-height:1.3;margin-bottom:2px;}
+.mc-meta{font-size:9px;color:var(--dim);text-align:center;margin-bottom:6px;}
+.mc-float-bar{height:2px;border-radius:1px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:10px;}
+.mc-float-fill{height:100%;background:linear-gradient(90deg,#4caf50,#e2b04a,#e84040);}
+.mc-sep{height:1px;background:rgba(255,255,255,.05);margin-bottom:8px;}
+.mc-seller{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.mc-av{width:22px;height:22px;border-radius:50%;background:rgba(79,156,249,.1);border:1px solid rgba(79,156,249,.2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.mc-seller-nm{font-size:10px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mc-time{font-size:9px;color:var(--dim);}
+.mc-price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.mc-price{font-size:18px;font-weight:700;color:var(--gold2);}
+.mc-buy{width:100%;padding:8px;border-radius:7px;border:none;background:linear-gradient(135deg,rgba(76,175,80,.2),rgba(76,175,80,.1));border:1px solid rgba(76,175,80,.35);color:#4caf50;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;letter-spacing:.5px;}
+.mc-buy:hover{background:linear-gradient(135deg,rgba(76,175,80,.35),rgba(76,175,80,.2));box-shadow:0 0 12px rgba(76,175,80,.2);}
+
+/* MARKET CARD */
+.mkt-card{background:linear-gradient(160deg,#13132a,#0f1e3a);border:2px solid rgba(79,156,249,.1);border-radius:12px;padding:12px;position:relative;overflow:hidden;transition:.2s;}
+.mkt-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.mkt-card.is-new{animation:cardNew .4s ease;}
+@keyframes cardNew{from{transform:scale(.85);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mc-rarity-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.mc-st{position:absolute;top:8px;right:8px;background:rgba(255,165,0,.12);border:1px solid orange;color:orange;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:1px;}
+.mc-bot-tag{position:absolute;top:8px;left:8px;background:rgba(79,156,249,.12);border:1px solid rgba(79,156,249,.35);color:var(--blue);font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.mc-item-icon{font-size:38px;text-align:center;display:block;margin:18px 0 6px;}
+.mc-item-name{font-size:11px;font-weight:700;text-align:center;line-height:1.3;margin-bottom:2px;}
+.mc-item-wear{font-size:9px;color:var(--dim);text-align:center;margin-bottom:1px;}
+.mc-item-float{font-size:8px;color:var(--dim);text-align:center;margin-bottom:7px;}
+.mc-float-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden;margin-bottom:8px;}
+.mc-float-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold),var(--red));border-radius:2px;}
+.mc-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:8px;}
+.mc-seller-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.mc-seller-av{width:20px;height:20px;border-radius:50%;background:rgba(79,156,249,.15);border:1px solid rgba(79,156,249,.3);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.mc-seller-info{flex:1;min-width:0;}
+.mc-seller-name{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mc-seller-time{font-size:8px;color:var(--dim);margin-top:1px;}
+.mc-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:6px;}
+.mc-price{font-size:16px;font-weight:700;color:var(--gold2);}
+.mc-buy-btn{background:linear-gradient(135deg,#1a5a1a,#2d9a2d);border:1px solid var(--green);color:#fff;padding:7px;border-radius:6px;font-size:11px;font-weight:700;transition:.15s;width:100%;margin-top:7px;}
+.mc-buy-btn:hover{filter:brightness(1.3);}
+
+/* SELL GRID big */
+.sell-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.sell-item{background:rgba(19,19,43,.8);border-radius:8px;padding:12px;text-align:center;border:2px solid rgba(255,255,255,.06);cursor:pointer;transition:.2s;position:relative;}
+.sell-item:hover{border-color:rgba(226,176,74,.4);transform:translateY(-2px);box-shadow:0 6px 18px rgba(226,176,74,.1);}
+.si-listed-price{font-size:10px;color:var(--dim);margin-top:2px;}
+.si-actions{display:flex;gap:4px;margin-top:6px;}
+.si-btn{flex:1;padding:5px 4px;border-radius:5px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:1px solid;transition:.15s;}
+.si-edit{background:rgba(79,156,249,.1);border-color:rgba(79,156,249,.3);color:var(--blue);}
+.si-edit:hover{background:rgba(79,156,249,.25);}
+.si-delist{background:rgba(232,64,64,.08);border-color:rgba(232,64,64,.3);color:var(--red);}
+.si-delist:hover{background:rgba(232,64,64,.2);}
+.sell-item.listed{border-color:rgba(76,175,80,.5);background:rgba(76,175,80,.04);}
+
+.si-em{font-size:36px;display:block;margin-bottom:4px;}
+.si-nm{font-size:10px;font-weight:700;line-height:1.2;margin-bottom:2px;}
+.si-vl{font-size:12px;color:var(--gold);font-weight:700;margin-bottom:3px;}
+.si-st{font-size:9px;}
+.orders-list{display:flex;flex-direction:column;gap:8px;}
+.order{background:rgba(0,0,0,.2);border:1px solid rgba(76,175,80,.15);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.o-em{font-size:28px;}
+.o-inf{flex:1;}
+.o-nm{font-size:13px;font-weight:700;}
+.o-mt{font-size:10px;color:var(--dim);margin-top:1px;}
+.o-pr{font-size:15px;font-weight:700;color:var(--gold);}
+.dl-btn{background:rgba(232,64,64,.08);border:1px solid var(--red);color:var(--red);padding:6px 12px;border-radius:4px;font-size:11px;font-weight:700;transition:.15s;}
+.dl-btn:hover{background:rgba(232,64,64,.2);}
+
+/* ── PRICE GRAPH ── */
+.pg-ctrl{display:flex;align-items:center;gap:9px;margin-bottom:14px;flex-wrap:wrap;}
+.pg-tfs{display:flex;gap:3px;}
+.pg-tf{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:4px;color:var(--dim);padding:5px 10px;font-size:12px;font-weight:700;transition:.15s;}
+.pg-tf:hover,.pg-tf.active{background:rgba(79,156,249,.15);border-color:var(--blue);color:var(--blue);}
+.pg-layout{display:grid;grid-template-columns:220px 1fr;gap:12px;align-items:start;}
+.pg-list{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;overflow-y:auto;max-height:440px;}
+.pg-row{display:flex;align-items:center;gap:7px;padding:8px 9px;cursor:pointer;transition:.15s;border-bottom:1px solid rgba(255,255,255,.03);}
+.pg-row:last-child{border-bottom:none;}
+.pg-row:hover{background:rgba(79,156,249,.05);}
+.pg-row.active{background:rgba(79,156,249,.08);border-left:2px solid var(--blue);}
+.pg-em{font-size:18px;flex-shrink:0;}
+.pg-inf{flex:1;min-width:0;}
+.pg-nm{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pg-pr{font-size:10px;color:var(--gold);font-weight:700;}
+.pg-chg{font-size:9px;font-weight:700;white-space:nowrap;}
+.pg-chart-box{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.pg-hdr{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.pg-hnm{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;}
+.pg-hpr{font-size:22px;font-weight:700;color:var(--gold2);}
+.pg-hch{font-size:11px;font-weight:700;padding:2px 7px;border-radius:3px;}
+#pgc{width:100%;height:auto;border-radius:4px;display:block;}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:5px;margin-top:12px;}
+.pg-st{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:4px;padding:6px;text-align:center;}
+.pg-sv{font-size:12px;font-weight:700;color:var(--gold2);}
+.pg-sl{font-size:7px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-top:1px;}
+
+/* ── LEADERBOARD ── */
+.lb-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.lb-tab{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:5px;color:var(--dim);padding:7px 14px;font-size:12px;font-weight:700;transition:.15s;}
+.lb-tab:hover,.lb-tab.active{background:rgba(226,176,74,.1);border-color:var(--gold);color:var(--gold);}
+.lb-you{background:linear-gradient(135deg,rgba(79,156,249,.07),rgba(226,176,74,.04));border:1px solid rgba(79,156,249,.2);border-radius:8px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;gap:11px;}
+.lb-you-rk{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--blue);min-width:36px;text-align:center;}
+.lb-you-nm{font-size:13px;font-weight:700;color:#fff;}
+.lb-you-vl{font-size:11px;color:var(--dim);margin-top:1px;}
+.lb-list{display:flex;flex-direction:column;gap:4px;}
+.lb-row{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:10px 12px;display:flex;align-items:center;gap:11px;transition:.15s;}
+.lb-row:hover{background:rgba(255,255,255,.02);}
+.lb-row.g{background:linear-gradient(135deg,rgba(226,176,74,.07),transparent);border-color:rgba(226,176,74,.2);}
+.lb-row.s{background:linear-gradient(135deg,rgba(192,192,192,.05),transparent);border-color:rgba(192,192,192,.15);}
+.lb-row.b{background:linear-gradient(135deg,rgba(205,127,50,.05),transparent);border-color:rgba(205,127,50,.12);}
+.lb-rk{font-family:'Orbitron',monospace;font-size:15px;font-weight:900;min-width:32px;text-align:center;}
+.lb-av{font-size:20px;width:26px;text-align:center;}
+.lb-inf{flex:1;}
+.lb-nm{font-size:12px;font-weight:700;}
+.lb-sb{font-size:10px;color:var(--dim);margin-top:1px;}
+.lb-vl{font-size:14px;font-weight:700;color:var(--gold2);text-align:right;}
+.lb-vl small{display:block;font-size:9px;color:var(--dim);font-weight:400;}
+.you-tag{background:rgba(79,156,249,.12);border:1px solid var(--blue);color:var(--blue);font-size:8px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:4px;}
+
+/* ── INVENTORY ── */
+.inv-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap;}
+.inv-tot{font-size:12px;color:var(--dim);}
+.inv-tot span{color:var(--gold2);font-weight:700;font-size:13px;}
+.sell-all-btn{background:rgba(232,64,64,.08);border:1px solid var(--red);color:var(--red);padding:6px 14px;border-radius:4px;font-size:12px;font-weight:700;transition:.15s;}
+.sell-all-btn:hover{background:rgba(232,64,64,.2);}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:7px;}
+.inv-item{background:rgba(19,19,43,.7);border-radius:5px;padding:8px 5px;text-align:center;border:1px solid rgba(255,255,255,.05);cursor:pointer;transition:.15s;position:relative;}
+.inv-item:hover{transform:translateY(-2px);border-color:rgba(232,64,64,.3);}
+.ii-em{font-size:26px;display:block;}
+.ii-nm{font-size:8px;font-weight:700;margin-top:2px;line-height:1.2;}
+.ii-wr{font-size:7px;color:var(--dim);}
+.ii-vl{font-size:9px;color:var(--gold);font-weight:700;margin-top:2px;}
+.ii-st{position:absolute;top:2px;right:2px;width:4px;height:4px;background:orange;border-radius:50%;}
+.inv-empty{grid-column:1/-1;text-align:center;color:var(--dim);padding:40px;font-size:13px;}
+
+/* ── HISTORY ── */
+.hist-filt{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
+.filt{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:4px;color:var(--dim);padding:5px 11px;font-size:12px;font-weight:700;transition:.15s;}
+.filt:hover,.filt.active{background:rgba(79,156,249,.15);border-color:var(--blue);color:var(--blue);}
+.hist-list{display:flex;flex-direction:column;gap:5px;}
+.h-row{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.04);border-radius:6px;padding:9px 12px;display:flex;align-items:center;gap:10px;border-left:3px solid;animation:fslide .2s ease;}
+@keyframes fslide{from{transform:translateY(5px);opacity:0;}to{transform:none;opacity:1;}}
+.h-em{font-size:26px;flex-shrink:0;}
+.h-inf{flex:1;}
+.h-nm{font-size:12px;font-weight:700;}
+.h-mt{font-size:10px;color:var(--dim);margin-top:1px;}
+.h-vl{font-size:13px;font-weight:700;color:var(--gold);}
+.empty{text-align:center;color:var(--dim);padding:30px;font-size:13px;}
+
+/* ── EFFECTS ── */
+.sparks{position:fixed;inset:0;pointer-events:none;z-index:998;overflow:hidden;}
+.spk{position:absolute;border-radius:50%;animation:spkf 1.2s ease-out forwards;}
+@keyframes spkf{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--sx),var(--sy)) scale(0);opacity:0;}}
+.burst-c{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
+.bp2{position:absolute;border-radius:3px;animation:bpf var(--d) ease-out var(--dd) forwards;}
+@keyframes bpf{0%{transform:translate(0,0) rotate(0) scale(1);opacity:1;}100%{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(0);opacity:0;}}
+.rays-wrap{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden;display:none;}
+.rays-wrap.show{display:block;}
+.ray{position:absolute;top:50%;left:50%;width:2px;height:120vh;background:linear-gradient(transparent,rgba(255,255,255,.05),transparent);transform-origin:top center;animation:rr 3s linear infinite;}
+@keyframes rr{from{transform:rotate(var(--a));}to{transform:rotate(calc(var(--a) + 360deg));}}
+.toast{position:fixed;bottom:22px;right:18px;background:rgba(19,19,43,.97);border:1px solid rgba(79,156,249,.3);border-radius:7px;padding:10px 18px;color:#fff;font-size:13px;font-weight:700;z-index:2000;transform:translateX(130%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 6px 22px rgba(0,0,0,.5);max-width:250px;}
+.toast.show{transform:translateX(0);}
+@media(max-width:700px){.toast{bottom:68px;right:10px;}}
+</style>
+</head>
+<body>
+
+<div class="sparks" id="sparks"></div>
+<div class="burst-c" id="burst"></div>
+<div class="rays-wrap" id="rays">
+  <div class="ray" style="--a:0deg"></div><div class="ray" style="--a:30deg"></div>
+  <div class="ray" style="--a:60deg"></div><div class="ray" style="--a:90deg"></div>
+  <div class="ray" style="--a:120deg"></div><div class="ray" style="--a:150deg"></div>
+  <div class="ray" style="--a:180deg"></div><div class="ray" style="--a:210deg"></div>
+  <div class="ray" style="--a:240deg"></div><div class="ray" style="--a:270deg"></div>
+  <div class="ray" style="--a:300deg"></div><div class="ray" style="--a:330deg"></div>
+</div>
+
+<!-- WIN OVERLAY -->
+<div class="ov" id="ov">
+  <div class="ov-card" id="ov-card">
+    <div class="jp-rays-wrap" id="jp-rays"></div>
+    <div class="ov-particles" id="ov-parts"></div>
+    <span class="ov-crown" id="ov-crown" style="display:none">👑</span>
+    <div id="ov-st"></div>
+    <span class="ov-badge" id="ov-badge"></span>
+    <span class="ov-icon" id="ov-icon">🎁</span>
+    <div class="ov-name" id="ov-name"></div>
+    <div class="ov-wear" id="ov-wear"></div>
+    <div class="ov-float" id="ov-float"></div>
+    <div class="ov-val" id="ov-val"></div>
+    <div class="ov-btns">
+      <button class="ov-btn ob-sell" id="ov-sell">💰 SELL</button>
+      <button class="ov-btn ob-keep" id="ov-keep">🎒 KEEP</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">CS<b>2</b>CASES</div>
+  <div class="bal-box">
+    <div style="font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;">Balance</div>
+    <div class="bal-num" id="bal">$1,000.00</div>
+    <div class="bal-keys">🔑 Keys: <span id="key-count">3</span></div>
+    <div class="bal-row">
+      <button class="sb sb-g" id="btn-add-funds">+$500</button>
+      <button class="sb sb-r" id="btn-reset">Reset</button>
+    </div>
+  </div>
+  <div class="nav-sec">Menu</div>
+  <div class="nav-item active" data-page="open"><span>📦</span>Open Cases</div>
+  <div class="nav-item" data-page="tradeup"><span>🔄</span>Trade-Up</div>
+  <div class="nav-item" data-page="battle"><span>⚔️</span>Case Battle</div>
+  <div class="nav-item" data-page="market"><span>💹</span>Market</div>
+  <div class="nav-item" data-page="pricegraph"><span>📊</span>Price Graph</div>
+  <div class="nav-item" data-page="leaderboard"><span>🏆</span>Leaderboard</div>
+  <div class="nav-item" data-page="inventory"><span>🎒</span>Inventory</div>
+  <div class="nav-item" data-page="history"><span>📜</span>History</div>
+  <div class="nav-sec" style="margin-top:6px">🔴 Live Drops</div>
+  <div class="feed-box">
+    <div class="feed-hd"><div class="fdot"></div>GLOBAL FEED</div>
+    <div class="feed-list" id="feed-list"></div>
+  </div>
+  <div class="mini-grid">
+    <div class="mc"><div class="mc-v" id="ms-opened">0</div><div class="mc-l">Opened</div></div>
+    <div class="mc"><div class="mc-v" id="ms-spent">$0</div><div class="mc-l">Spent</div></div>
+    <div class="mc"><div class="mc-v" id="ms-inv">$0</div><div class="mc-l">Inv. Val</div></div>
+    <div class="mc"><div class="mc-v" id="ms-best">—</div><div class="mc-l">Best Drop</div></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="content">
+<!-- STICKY HEADER BAR -->
+<div class="hdr-bar">
+  <div class="hdr-bal">
+    <span class="hdr-bal-lbl">💰 BALANCE</span>
+    <span class="hdr-bal-num" id="bal-hdr">$1,000.00</span>
+  </div>
+  <div class="hdr-keys">🔑 <span id="key-hdr">3</span> keys</div>
+  <div class="hdr-btns">
+    <button class="hdr-btn hdr-add" id="btn-add-hdr">+ $500</button>
+    <button class="hdr-btn hdr-rst" id="btn-rst-hdr">Reset</button>
+  </div>
+</div>
+
+<!-- PAGE: OPEN -->
+<div class="page active" id="page-open">
+  <div class="pg-title">Case Opening</div>
+  <div class="pg-sub">Select a case, buy keys, and open!</div>
+  <div class="sec">Choose Case</div>
+  <div class="cases-grid" id="cases-grid"></div>
+  <div class="opener">
+    <div class="scene-wrap">
+      <div class="scene">
+        <div class="c-glow" id="c-glow"></div>
+        <div class="key-el" id="key-el">🔑</div>
+        <div class="c3d" id="c3d">
+          <div class="c-lid" id="c-lid"><div class="lid-f"></div></div>
+          <div class="cf cf-front" id="cf-front">
+            <div class="cf-shine"></div>
+            <span class="c-em" id="c-em">📦</span>
+            <span class="c-lbl" id="c-lbl">SELECT A CASE</span>
+            <div class="c-slot" id="c-slot"><div class="c-hole"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="case-meta">
+        <div class="case-meta-name" id="case-name">Select a Case</div>
+        <div class="case-meta-price" id="case-price">$0.00</div>
+        <div id="jp-notice" style="display:none;margin-top:6px;padding:4px 10px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.35);border-radius:4px;font-size:11px;color:var(--jp);font-weight:700;letter-spacing:1px;">🔥 JACKPOT — 2 keys per open!</div>
+      </div>
+    </div>
+    <div class="kp">
+      <div class="kp-row">
+        <div class="kp-l"><span class="kp-ic">🔑</span><div><div class="kp-title">Case Keys</div><div class="kp-cnt">You have <b id="kp-cnt">3</b> keys</div></div></div>
+        <div class="kp-btns">
+          <button class="kb" id="buy-key-1">×1 — $2.49</button>
+          <button class="kb" id="buy-key-5">×5 — $11.00</button>
+          <button class="kb" id="buy-key-10">×10 — $19.99</button>
+        </div>
+      </div>
+      <div class="kp-note">🔒 1 key per open. Premium cases need 2 keys.</div>
+    </div>
+    <div class="qty-row">
+      <span class="qty-lbl">Qty:</span>
+      <div class="qty-btns">
+        <button class="qb active" data-qty="1">×1</button>
+        <button class="qb" data-qty="2">×2</button>
+        <button class="qb" data-qty="3">×3</button>
+        <button class="qb" data-qty="5">×5</button>
+        <button class="qb" data-qty="10">×10</button>
+      </div>
+    </div>
+    <div class="reel-wrap" id="reel-wrap">
+      <div class="rfl l"></div><div class="rfl r"></div>
+      <div class="reel-mark"></div>
+      <div class="reel-track" id="reel-track"></div>
+    </div>
+    <div class="multi-res" id="multi-res"></div>
+    <button class="open-btn" id="open-btn">🔓 OPEN CASE</button>
+  </div>
+  <div class="sec" style="margin-top:18px">Drop Chances</div>
+  <div class="ch-grid" id="ch-grid"></div>
+</div>
+
+<!-- PAGE: TRADEUP -->
+<div class="page" id="page-tradeup">
+  <div class="pg-title">Trade-Up Contract</div>
+  <div class="pg-sub">10 items of same rarity → 1 higher rarity item.</div>
+  <div class="tu-wrap">
+    <div class="tu-panel"><div class="tu-ttl">Inventory — click to add</div><div class="tu-pool" id="tu-pool"></div></div>
+    <div class="tu-arr">⟶<div class="tu-cnt-wrap"><b id="tu-cnt">0</b>/10</div></div>
+    <div class="tu-panel" style="border-color:rgba(226,176,74,.15)">
+      <div class="tu-ttl">Selected (10 same rarity)</div>
+      <div class="tu-slots" id="tu-slots"></div>
+      <div class="tu-info" id="tu-info">Select 10 items of the same rarity</div>
+      <button class="tu-btn" id="tu-btn" disabled>⬆ TRADE UP</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: BATTLE -->
+<div class="page" id="page-battle">
+  <div class="pg-title">Case Battle</div>
+  <div class="pg-sub">Open same cases vs Bot — highest value wins everything!</div>
+  <div class="b-sel"><div class="b-sel-lbl">Select Case</div><select id="b-case-sel"></select></div>
+  <div class="b-sel-lbl" style="margin-bottom:6px">Rounds</div>
+  <div class="rounds">
+    <button class="rb active" data-rounds="3">3</button>
+    <button class="rb" data-rounds="5">5</button>
+    <button class="rb" data-rounds="7">7</button>
+  </div>
+  <div class="bt-wrap">
+    <div class="bp"><div class="bp-nm">👤 YOU</div><div class="bp-cost" id="bpc-you">$0.00</div><div class="bp-items" id="bpi-you"></div><div class="bp-total" id="bpt-you">$0.00</div><div class="bp-result" id="bpr-you"></div></div>
+    <div class="bvs"><div class="bvs-txt">VS</div><button class="battle-btn" id="battle-btn">⚔️ BATTLE</button></div>
+    <div class="bp"><div class="bp-nm">🤖 BOT</div><div class="bp-cost" id="bpc-bot">$0.00</div><div class="bp-items" id="bpi-bot"></div><div class="bp-total" id="bpt-bot">$0.00</div><div class="bp-result" id="bpr-bot"></div></div>
+  </div>
+</div>
+
+<!-- PAGE: MARKET -->
+<div class="page" id="page-market">
+  <div class="pg-title">💹 Market</div>
+  <div class="pg-sub">Live — bots and players trading in real time</div>
+
+  <!-- TABS -->
+  <div class="mkt-tabs">
+    <button class="mkt-tab-btn active" data-mkt="browse">🛒 Browse</button>
+    <button class="mkt-tab-btn" data-mkt="sell">💰 Sell</button>
+    <button class="mkt-tab-btn" data-mkt="orders">📋 My Listings</button>
+  </div>
+
+  <!-- BROWSE -->
+  <div id="mkt-browse">
+    <div class="mkt-ticker-wrap">
+      <div class="mkt-ticker-lbl">LIVE</div>
+      <div class="mkt-ticker" id="mkt-ticker"></div>
+    </div>
+    <div class="mkt-filter-row">
+      <div class="mkt-search-wrap">
+        <input class="mkt-search" id="mkt-q" placeholder="Search skins..."/>
+      </div>
+      <select class="mkt-filter-sel" id="mkt-sort">
+        <option value="new">Newest</option>
+        <option value="price-asc">Price ↑</option>
+        <option value="price-desc">Price ↓</option>
+        <option value="rarity">Rarity</option>
+      </select>
+      <select class="mkt-filter-sel" id="mkt-rf">
+        <option value="all">All</option>
+        <option value="consumer">Consumer</option>
+        <option value="industrial">Industrial</option>
+        <option value="milspec">Mil-Spec</option>
+        <option value="restricted">Restricted</option>
+        <option value="classified">Classified</option>
+        <option value="covert">Covert</option>
+        <option value="gold">Gold ★</option>
+        <option value="jackpot">Jackpot 🔥</option>
+      </select>
+      <div class="mkt-count-badge" id="mkt-count">0</div>
+    </div>
+    <div class="mkt-grid-area">
+      <div class="mkt-slider-wrap">
+        <button class="mkt-arrow" id="mkt-prev">‹</button>
+        <div class="mkt-slider-viewport" id="mkt-viewport">
+          <div class="mkt-slider-track" id="mkt-track"></div>
+        </div>
+        <button class="mkt-arrow" id="mkt-next">›</button>
+      </div>
+    </div>
+    <div class="mkt-dots" id="mkt-dots"></div>
+    <div class="mkt-nav-row">
+      <button class="mkt-nav-btn" id="mkt-prev2">‹ Prev</button>
+      <div class="mkt-page-info" id="mkt-page-info">1 / 1</div>
+      <button class="mkt-nav-btn" id="mkt-next2">Next ›</button>
+    </div>
+  </div>
+
+  <!-- SELL -->
+  <div id="mkt-sell" style="display:none">
+    <div style="font-size:13px;color:var(--dim);margin-bottom:12px">Tap an item to list it. Bots may buy it!</div>
+    <div class="sell-grid" id="sell-grid"></div>
+  </div>
+
+  <!-- ORDERS -->
+  <div id="mkt-orders" style="display:none">
+    <div style="font-size:13px;color:var(--dim);margin-bottom:12px">Your active listings.</div>
+    <div class="orders-list" id="orders-list"><div class="empty">No active listings.</div></div>
+  </div>
+</div>
+
+<!-- PAGE: PRICE GRAPH -->
+<div class="page" id="page-pricegraph">
+  <div class="pg-title">📊 Price Graph</div>
+  <div class="pg-sub">Live price movements — updates every 2s.</div>
+  <div class="pg-ctrl">
+    <input class="mkt-in" id="pg-search" placeholder="🔍 Search skin..." style="max-width:200px"/>
+    <div class="pg-tfs">
+      <button class="pg-tf active" data-tf="1h">1H</button>
+      <button class="pg-tf" data-tf="24h">24H</button>
+      <button class="pg-tf" data-tf="7d">7D</button>
+      <button class="pg-tf" data-tf="30d">30D</button>
+    </div>
+  </div>
+  <div class="pg-layout">
+    <div class="pg-list" id="pg-list"></div>
+    <div class="pg-chart-box">
+      <div class="pg-hdr"><div class="pg-hnm" id="pg-hnm">Select a skin</div><div class="pg-hpr" id="pg-hpr">$0.00</div><div class="pg-hch" id="pg-hch"></div></div>
+      <canvas id="pgc" width="640" height="260"></canvas>
+      <div class="pg-stats" id="pg-stats"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: LEADERBOARD -->
+<div class="page" id="page-leaderboard">
+  <div class="pg-title">🏆 Leaderboard</div>
+  <div class="pg-sub">Top players globally.</div>
+  <div class="lb-tabs">
+    <button class="lb-tab active" data-lb="value">💰 Inv. Value</button>
+    <button class="lb-tab" data-lb="opened">📦 Most Opened</button>
+    <button class="lb-tab" data-lb="best">🌟 Best Drop</button>
+    <button class="lb-tab" data-lb="spent">💸 Most Spent</button>
+  </div>
+  <div class="lb-you" id="lb-you"></div>
+  <div class="lb-list" id="lb-list"></div>
+</div>
+
+<!-- PAGE: INVENTORY -->
+<div class="page" id="page-inventory">
+  <div class="pg-title">🎒 Inventory</div>
+  <div class="inv-top">
+    <div class="inv-tot">Items: <span id="inv-cnt">0</span> &nbsp; Value: <span id="inv-val">$0.00</span></div>
+    <button class="sell-all-btn" id="sell-all-btn">SELL ALL</button>
+  </div>
+  <div class="inv-grid" id="inv-grid"><div class="inv-empty">No items yet.</div></div>
+</div>
+
+<!-- PAGE: HISTORY -->
+<div class="page" id="page-history">
+  <div class="pg-title">📜 History</div>
+  <div class="hist-filt">
+    <button class="filt active" data-filt="all">All</button>
+    <button class="filt" data-filt="covert">Covert+</button>
+    <button class="filt" data-filt="jackpot">Jackpot</button>
+  </div>
+  <div class="hist-list" id="hist-list"><div class="empty">No history yet.</div></div>
+</div>
+
+</main>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mob-bar" id="mob-bar">
+  <button class="mb active" data-page="open"><span class="mb-ic">📦</span>Open</button>
+  <button class="mb" data-page="market"><span class="mb-ic">💹</span>Market</button>
+  <button class="mb" data-page="leaderboard"><span class="mb-ic">🏆</span>Ranks</button>
+  <button class="mb" data-page="inventory"><span class="mb-ic">🎒</span>Inventory</button>
+  <button class="mb" data-page="history"><span class="mb-ic">📜</span>History</button>
+</nav>
+
+<!-- BUY CONFIRM MODAL -->
+<div class="modal-ov" id="buy-modal">
+  <div class="modal-card">
+    <div class="modal-title">🛒 Confirm Purchase</div>
+    <div class="modal-item-preview" id="buy-preview"></div>
+    <div class="modal-info" id="buy-info"></div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-confirm" id="buy-confirm-btn">✅ Buy Now</button>
+      <button class="modal-btn modal-cancel" id="buy-cancel-btn">❌ Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SELL PRICE MODAL -->
+<div class="modal-ov" id="sell-modal">
+  <div class="modal-card">
+    <div class="modal-title">💰 List Item for Sale</div>
+    <div class="modal-item-preview" id="sell-preview"></div>
+    <div class="modal-price-row">
+      <div class="modal-price-lbl">Set your price:</div>
+      <div class="modal-price-opts">
+        <button class="price-preset" id="pp-low">📉 Low<br><small id="pp-low-val"></small></button>
+        <button class="price-preset active" id="pp-mid">💹 Market<br><small id="pp-mid-val"></small></button>
+        <button class="price-preset" id="pp-high">📈 High<br><small id="pp-high-val"></small></button>
+      </div>
+      <div class="modal-price-input-row">
+        <span class="modal-price-dollar">$</span>
+        <input class="modal-price-input" id="sell-price-input" type="number" min="0.01" step="0.01"/>
+      </div>
+      <div class="modal-price-note" id="sell-price-note"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-confirm" id="sell-confirm-btn">📤 List Item</button>
+      <button class="modal-btn modal-cancel" id="sell-cancel-btn">❌ Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- SALE NOTIFICATION -->
+<div class="sale-notif" id="sale-notif">
+  <div class="sale-notif-icon" id="sale-notif-icon">💰</div>
+  <div class="sale-notif-body">
+    <div class="sale-notif-title">Item Sold!</div>
+    <div class="sale-notif-msg" id="sale-notif-msg"></div>
+  </div>
+  <button class="sale-notif-close" id="sale-notif-close">×</button>
+</div>
+
+
+<script>
+// ═══════════════ DATA ═══════════════
+var CASES = [
+  {id:'recoil',name:'Recoil Case',em:'🔫',price:2.49,col:'#4f9cf9',desc:'Iconic CS2 skins',jp:false},
+  {id:'dreams',name:'Dreams & Nightmares',em:'🌙',price:0.79,col:'#9c27b0',desc:'Dark fantasy designs',jp:false},
+  {id:'fracture',name:'Fracture Case',em:'💥',price:1.99,col:'#e84040',desc:'Bold explosive finishes',jp:false},
+  {id:'prisma',name:'Prisma Case',em:'🌈',price:3.49,col:'#e040fb',desc:'Vibrant holographic skins',jp:false},
+  {id:'snakebite',name:'Snakebite Case',em:'🐍',price:1.29,col:'#4caf50',desc:'Serpentine patterns',jp:false},
+  {id:'gamma',name:'Gamma Case',em:'⚛️',price:4.99,col:'#4caf50',desc:'Radioactive energy skins',jp:false},
+  {id:'chroma',name:'Chroma Case',em:'🔮',price:2.99,col:'#9c27b0',desc:'Chrome metallic finishes',jp:false},
+  {id:'danger',name:'Danger Zone',em:'☢️',price:0.59,col:'#ff9800',desc:'Tactical survival designs',jp:false},
+  {id:'revolution',name:'Revolution Case',em:'⚡',price:3.99,col:'#4f9cf9',desc:'High-voltage electro art',jp:false},
+  {id:'kilowatt',name:'Kilowatt Case',em:'🔆',price:5.49,col:'#ff9800',desc:'Industrial power aesthetics',jp:false},
+  {id:'shattered',name:'Shattered Web',em:'🕸️',price:14.99,col:'#ff6b35',desc:'Elite spider silk designs',jp:true},
+  {id:'clutch',name:'Clutch Case',em:'💎',price:19.99,col:'#e2b04a',desc:'Diamond-tier rare drops',jp:true},
+  {id:'gloves',name:'Glove Case',em:'🧤',price:24.99,col:'#e2b04a',desc:'Legendary gloves and knives',jp:true},
+  {id:'spectrum',name:'Spectrum 2 Case',em:'🌠',price:29.99,col:'#ff6b35',desc:'Ultra premium drops',jp:true}
+];
+
+var ITEMS = [
+  {name:'MP5-SD | Desert',e:'🔫',r:'consumer',w:['FN','MW','FT','WW','BS'],b:0.12},
+  {name:'P2000 | Ivory',e:'🔫',r:'consumer',w:['FN','MW','FT','WW','BS'],b:0.15},
+  {name:'MAC-10 | Brass',e:'🔫',r:'consumer',w:['FN','MW','FT','WW','BS'],b:0.14},
+  {name:'Nova | Caged Steel',e:'🔫',r:'consumer',w:['FN','MW','FT','WW','BS'],b:0.18},
+  {name:'Tec-9 | Bamboo',e:'🔫',r:'consumer',w:['FN','MW','FT','WW','BS'],b:0.16},
+  {name:'MP9 | Orange Peel',e:'🔫',r:'industrial',w:['FN','MW','FT','WW','BS'],b:0.45},
+  {name:'UMP-45 | Exposure',e:'🔫',r:'industrial',w:['FN','MW','FT','WW','BS'],b:0.6},
+  {name:'Five-SeveN | Silver Quartz',e:'🔫',r:'industrial',w:['FN','MW','FT','WW','BS'],b:0.55},
+  {name:'CZ75 | Chalice',e:'🔫',r:'industrial',w:['FN','MW','FT','WW','BS'],b:0.5},
+  {name:'AK-47 | Slate',e:'🔫',r:'milspec',w:['FN','MW','FT','WW','BS'],b:2.8},
+  {name:'M4A1-S | Basilisk',e:'🔫',r:'milspec',w:['FN','MW','FT','WW','BS'],b:4.2},
+  {name:'Glock-18 | Nuclear Garden',e:'🔫',r:'milspec',w:['FN','MW','FT','WW','BS'],b:2.5},
+  {name:'Desert Eagle | Oxide Blaze',e:'🔫',r:'milspec',w:['FN','MW','FT','WW','BS'],b:3.5},
+  {name:'P250 | Digital Architect',e:'🔫',r:'milspec',w:['FN','MW','FT','WW','BS'],b:2.2},
+  {name:'AWP | Exoskeleton',e:'🔭',r:'restricted',w:['FN','MW','FT','WW','BS'],b:11},
+  {name:'USP-S | Cortex',e:'🔫',r:'restricted',w:['FN','MW','FT','WW','BS'],b:9},
+  {name:'MP7 | Neon Ply',e:'🔫',r:'restricted',w:['FN','MW','FT','WW','BS'],b:7.5},
+  {name:'SG 553 | Colony IV',e:'🔫',r:'restricted',w:['FN','MW','FT','WW','BS'],b:8.5},
+  {name:'AUG | Momentum',e:'🔫',r:'restricted',w:['FN','MW','FT','WW','BS'],b:10},
+  {name:'M4A4 | The Emperor',e:'🔫',r:'classified',w:['FN','MW','FT','WW','BS'],b:42},
+  {name:'AK-47 | Neon Rider',e:'🔫',r:'classified',w:['FN','MW','FT','WW','BS'],b:35},
+  {name:'Glock-18 | Vogue',e:'🔫',r:'classified',w:['FN','MW','FT','WW','BS'],b:28},
+  {name:'M4A1-S | Bright Water',e:'🔫',r:'classified',w:['FN','MW','FT','WW','BS'],b:32},
+  {name:'AWP | Neo-Noir',e:'🔭',r:'covert',w:['FN','MW','FT','WW','BS'],b:210},
+  {name:'AK-47 | Bloodsport',e:'🔫',r:'covert',w:['FN','MW','FT','WW','BS'],b:175},
+  {name:'M4A4 | Howl',e:'🔫',r:'covert',w:['FN','MW','FT','WW','BS'],b:3200},
+  {name:'Desert Eagle | Blaze',e:'🔫',r:'covert',w:['FN','MW','FT'],b:420},
+  {name:'Karambit | Fade',e:'🔪',r:'gold',w:['FN','MW','FT'],b:1100},
+  {name:'Butterfly | Doppler',e:'🔪',r:'gold',w:['FN','MW','FT'],b:920},
+  {name:'M9 Bayonet | Tiger Tooth',e:'🔪',r:'gold',w:['FN','MW'],b:790},
+  {name:'Stiletto | Slaughter',e:'🔪',r:'gold',w:['FN','MW','FT'],b:580},
+  {name:'Talon | Ruby',e:'🔪',r:'gold',w:['FN','MW'],b:1400},
+  {name:'Sport Gloves | Pandora',e:'🧤',r:'gold',w:['FN','MW','FT'],b:1600},
+  {name:'Bloodhound | Charred',e:'🧤',r:'gold',w:['FN','MW','FT'],b:480},
+  {name:'Karambit | Blue Gem',e:'🔪',r:'jackpot',w:['FN','MW'],b:12000},
+  {name:'Butterfly | Emerald',e:'🔪',r:'jackpot',w:['FN','MW'],b:8500},
+  {name:'AK-47 | Wild Lotus',e:'🔫',r:'jackpot',w:['FN','MW'],b:5500},
+  {name:'Specialist | Crimson Kimono',e:'🧤',r:'jackpot',w:['FN','MW'],b:7200}
+];
+
+var WN = {FN:'Factory New',MW:'Minimal Wear',FT:'Field-Tested',WW:'Well-Worn',BS:'Battle-Scarred'};
+var RC = {consumer:'#b0bec5',industrial:'#78909c',milspec:'#4f9cf9',restricted:'#9c27b0',classified:'#e040fb',covert:'#e84040',gold:'#e2b04a',jackpot:'#ff6b35'};
+var RN = {consumer:'Consumer Grade',industrial:'Industrial Grade',milspec:'Mil-Spec',restricted:'Restricted',classified:'Classified',covert:'Covert',gold:'Rare Special',jackpot:'JACKPOT'};
+var RW = {consumer:40,industrial:25,milspec:20,restricted:10,classified:4,covert:0.74,gold:0.25};
+var RWJ = {consumer:40,industrial:25,milspec:20,restricted:10,classified:4,covert:0.74,gold:0.25,jackpot:0.01};
+var RUP = {consumer:'industrial',industrial:'milspec',milspec:'restricted',restricted:'classified',classified:'covert',covert:'gold'};
+var USERS = ['xX_Shadow_Xx','d3adsh0t','NikoS_Fan','ZywOo_Pro','f0rest_Legend','AstralHunter','VoidBreaker','NeonPhantom','CrimsonWolf','IronFang','GhostRecon99','PixelKiller','ToxicAce','Reactor_K','SilverMoon','DarkMatter','QuantumRift','FrostByte_','L33tSn1per','xXProGamerXx'];
+var AVTS = ['😎','🤖','👾','🦊','🐺','🦅','🐉','🔥','⚡','💀','🎯','🏹','🗡️','🛡️','🌟','🎮','🧠','🐍','🦁','🔮'];
+
+// ═══════════════ STATE ═══════════════
+var S = {
+  bal: 1000, keys: 3,
+  selCase: 0, qty: 1,
+  inv: [], hist: [], pending: null, spinning: false,
+  stats: {opened:0, spent:0, best:null},
+  tuSel: [],
+  histFilt: 'all',
+  mktListings: [], mktOrders: [], mktSub: 'browse',
+  lbKey: 'value',
+  bRounds: 3, battleRunning: false,
+  pgTf: '1h', pgSel: 0, pgItems: [], pgHistories: {}, pgIv: null, pgFiltered: []
+};
+
+// ═══════════════ AUDIO ═══════════════
+var _ac = null;
+function getAC() {
+  if (!_ac) { try { _ac = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } }
+  if (_ac.state === 'suspended') _ac.resume();
+  return _ac;
+}
+function playTone(f, t, d, v, s) {
+  v = v || 0.2; s = s || 0;
+  try {
+    var c = getAC(); if (!c) return;
+    var o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.type = t; o.frequency.setValueAtTime(f, c.currentTime + s);
+    g.gain.setValueAtTime(v, c.currentTime + s);
+    g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + s + d);
+    o.start(c.currentTime + s); o.stop(c.currentTime + s + d);
+  } catch(e) {}
+}
+function playNoise(d, v, s) {
+  v = v || 0.1; s = s || 0;
+  try {
+    var c = getAC(); if (!c) return;
+    var sz = Math.floor(c.sampleRate * d);
+    var buf = c.createBuffer(1, sz, c.sampleRate);
+    var dat = buf.getChannelData(0);
+    for (var i = 0; i < sz; i++) dat[i] = Math.random() * 2 - 1;
+    var src = c.createBufferSource(), g = c.createGain(), filt = c.createBiquadFilter();
+    src.buffer = buf; filt.type = 'bandpass'; filt.frequency.value = 1200;
+    src.connect(filt); filt.connect(g); g.connect(c.destination);
+    g.gain.setValueAtTime(v, c.currentTime + s);
+    g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + s + d);
+    src.start(c.currentTime + s); src.stop(c.currentTime + s + d);
+  } catch(e) {}
+}
+function sndKey() { playTone(660,'sine',.1,.2); playTone(880,'sine',.12,.22,.07); }
+function sndInsert() { playTone(220,'sine',.15,.3); playNoise(.18,.2,.08); }
+function sndShake() { playTone(80,'sine',.08,.4); playTone(90,'sine',.08,.4,.06); playNoise(.3,.3); }
+function sndLid() { playTone(180,'sine',.4,.35); playTone(140,'sine',.35,.3,.15); playNoise(.25,.2,.2); }
+function sndSpin() {
+  try {
+    var c = getAC(); if (!c) return;
+    var o = c.createOscillator(), g = c.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(80, c.currentTime);
+    o.frequency.exponentialRampToValueAtTime(800, c.currentTime + 1.2);
+    g.gain.setValueAtTime(.2, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001, c.currentTime + 1.4);
+    o.connect(g); g.connect(c.destination);
+    o.start(c.currentTime); o.stop(c.currentTime + 1.4);
+  } catch(e) {}
+}
+function sndReveal(r) {
+  if (r === 'jackpot') {
+    playTone(80,'sine',.5,.5);
+    var freqs = [523,659,784,1047,784,1047,1319];
+    for (var i = 0; i < freqs.length; i++) playTone(freqs[i],'sine',.35,.4,.5+i*.1);
+    playNoise(.5,.25,.5);
+  } else if (r === 'gold') {
+    var ff = [262,330,392,523,659,784,1047,1319];
+    for (var i = 0; i < ff.length; i++) playTone(ff[i],'sine',.3,.35,i*.06);
+    playNoise(.5,.2,.5);
+  } else if (r === 'covert') {
+    var fc = [659,784,988,1319];
+    for (var i = 0; i < fc.length; i++) playTone(fc[i],'sine',.25,.3,.05+i*.08);
+    playNoise(.4,.15,.4);
+  } else if (r === 'classified') {
+    playTone(523,'sine',.22,.28); playTone(659,'sine',.22,.28,.07); playTone(784,'sine',.22,.28,.14); playTone(1047,'sine',.22,.28,.21);
+  } else if (r === 'restricted' || r === 'milspec') {
+    playTone(523,'sine',.2,.25); playTone(659,'sine',.2,.25,.07); playTone(784,'sine',.2,.25,.14);
+  } else {
+    playTone(523,'sine',.15,.2); playTone(659,'sine',.12,.18,.1);
+  }
+}
+function sndClick() { playTone(660,'sine',.08,.15); }
+function sndSell() { playTone(880,'sine',.08,.2); playTone(1100,'sine',.1,.2,.07); playTone(1320,'sine',.12,.15,.14); }
+function sndFunds() { playTone(523,'sine',.15,.25); playTone(659,'sine',.15,.25,.05); playTone(784,'sine',.15,.25,.1); playTone(1047,'sine',.15,.25,.15); }
+var _tickIv = null;
+function startTick() {
+  clearInterval(_tickIv);
+  var sp = 60, phase = 0;
+  _tickIv = setInterval(function() {
+    playTone(300 + Math.random()*200,'square',.04,.07);
+  }, sp);
+  setTimeout(function() {
+    clearInterval(_tickIv);
+    _tickIv = setInterval(function() { playTone(500+Math.random()*100,'square',.06,.1); }, 130);
+  }, 3000);
+  setTimeout(function() {
+    clearInterval(_tickIv);
+    _tickIv = setInterval(function() { playTone(500+Math.random()*100,'square',.06,.1); }, 240);
+  }, 4500);
+  setTimeout(function() {
+    clearInterval(_tickIv);
+    playTone(120,'sine',.25,.4); playTone(80,'sine',.2,.3,.05); playNoise(.15,.2);
+  }, 5500);
+}
+
+// ═══════════════ HELPERS ═══════════════
+function $(id) { return document.getElementById(id); }
+function fmt(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+var _toast_t;
+function toast(msg) {
+  var el = $('toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(_toast_t); _toast_t = setTimeout(function() { el.classList.remove('show'); }, 2800);
+}
+function wait(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function sparkle(col) {
+  var c = $('sparks');
+  for (var i = 0; i < 28; i++) {
+    var s = document.createElement('div'); s.className = 'spk';
+    var sz = 3 + Math.random()*5;
+    s.style.cssText = 'width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*innerWidth+'px;top:'+Math.random()*innerHeight+'px;background:'+col+';--sx:'+(Math.random()-.5)*200+'px;--sy:'+(Math.random()-.5)*200+'px;animation-delay:'+Math.random()*.5+'s';
+    c.appendChild(s); setTimeout(function(el) { return function() { el.remove(); }; }(s), 1600);
+  }
+}
+function burstParts(col, n, cx, cy) {
+  cx = cx || innerWidth/2; cy = cy || innerHeight/2; n = n || 40;
+  var c = $('burst');
+  for (var i = 0; i < n; i++) {
+    var p = document.createElement('div'); p.className = 'bp2';
+    var ang = Math.random()*360, dist = 80+Math.random()*250, rad = ang*Math.PI/180;
+    var sz = 3+Math.random()*7, dur = .5+Math.random()*.6;
+    p.style.cssText = 'width:'+sz+'px;height:'+sz+'px;left:'+cx+'px;top:'+cy+'px;background:'+col+';border-radius:'+(Math.random()>.5?'50%':'3px')+';--x:'+Math.cos(rad)*dist+'px;--y:'+Math.sin(rad)*dist+'px;--r:'+Math.random()*720+'deg;--d:'+dur+'s;--dd:'+Math.random()*.2+'s';
+    c.appendChild(p); setTimeout(function(el) { return function() { el.remove(); }; }(p), (dur+.3)*1000);
+  }
+}
+
+// ═══════════════ RNG ═══════════════
+function rollRarity(jp) {
+  var w = jp ? RWJ : RW;
+  var tot = 0; for (var k in w) tot += w[k];
+  var r = Math.random() * tot;
+  for (var k in w) { r -= w[k]; if (r <= 0) return k; }
+  return 'consumer';
+}
+function rollItem(jp) {
+  var rar = rollRarity(jp);
+  var pool = ITEMS.filter(function(i) { return i.r === rar; });
+  var it = rand(pool);
+  var wear = rand(it.w);
+  var wm = {FN:1.85,MW:1.2,FT:.9,WW:.65,BS:.45};
+  var isST = rar !== 'jackpot' && Math.random() < .1;
+  var isSV = rar !== 'jackpot' && rar !== 'gold' && Math.random() < .05;
+  var fl = +(Math.random()*.999+.001).toFixed(4);
+  var val = +(it.b * (wm[wear]||1) * (isST?1.55:1) * (.82+Math.random()*.36)).toFixed(2);
+  return {name:it.name,e:it.e,r:rar,wear:wear,wearFull:WN[wear],fl:fl,isST:isST,isSV:isSV,val:val,caseName:CASES[S.selCase].name};
+}
+
+// ═══════════════ UPDATE UI ═══════════════
+function updateUI() {
+  var b = fmt(S.bal);
+  $('bal').textContent = b;
+  if($('bal-hdr')) $('bal-hdr').textContent = b;
+  if($('key-hdr')) $('key-hdr').textContent = S.keys;
+  $('key-count').textContent = S.keys;
+  $('kp-cnt').textContent = S.keys;
+  $('ms-opened').textContent = S.stats.opened;
+  $('ms-spent').textContent = '$'+Math.floor(S.stats.spent);
+  var iv = S.inv.reduce(function(s,i) { return s+i.val; }, 0);
+  $('ms-inv').textContent = '$'+Math.floor(iv);
+  $('inv-cnt').textContent = S.inv.length;
+  $('inv-val').textContent = fmt(iv);
+  if (S.stats.best) $('ms-best').textContent = S.stats.best.e;
+  updateBSel();
+}
+function updateBest(it) { if (!S.stats.best || it.val > S.stats.best.val) S.stats.best = it; }
+
+// ═══════════════ NAVIGATION ═══════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  var pg = $('page-' + id);
+  if (pg) pg.classList.add('active');
+  if (id === 'inventory') renderInv();
+  if (id === 'tradeup') renderTuPool();
+  if (id === 'history') renderHist();
+  if (id === 'market') { if (!MKT.listings.length) mktInit(); else renderMkt(); }
+  if (id === 'leaderboard') renderLb();
+  if (id === 'pricegraph') initPg();
+}
+
+// Nav items (sidebar)
+document.querySelectorAll('.nav-item').forEach(function(el) {
+  el.addEventListener('click', function() {
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    el.classList.add('active');
+    showPage(el.dataset.page);
+    sndClick();
+  });
+});
+
+// Mobile nav
+document.querySelectorAll('.mb').forEach(function(el) {
+  el.addEventListener('click', function() {
+    document.querySelectorAll('.mb').forEach(function(b) { b.classList.remove('active'); });
+    el.classList.add('active');
+    showPage(el.dataset.page);
+  });
+});
+
+// ═══════════════ CASES ═══════════════
+function renderCases() {
+  var html = '';
+  for (var i = 0; i < CASES.length; i++) {
+    var c = CASES[i];
+    html += '<div class="cc' + (c.jp?' jp-case':'') + (i===0?' active':'') + '" data-ci="'+i+'">';
+    if (c.jp) html += '<div class="jp-tag">🔥 JACKPOT</div>';
+    html += '<span class="cc-em">'+c.em+'</span><div class="cc-nm">'+c.name+'</div><div class="cc-pr">$'+c.price.toFixed(2)+'</div></div>';
+  }
+  $('cases-grid').innerHTML = html;
+  document.querySelectorAll('.cc').forEach(function(el) {
+    el.addEventListener('click', function() {
+      document.querySelectorAll('.cc').forEach(function(c) { c.classList.remove('active'); });
+      el.classList.add('active');
+      S.selCase = parseInt(el.dataset.ci);
+      pickCase(); sndClick();
+    });
+  });
+}
+
+function pickCase() {
+  var c = CASES[S.selCase];
+  $('c-em').textContent = c.em;
+  $('c-lbl').textContent = c.name.toUpperCase();
+  $('case-name').textContent = c.name;
+  $('case-price').textContent = fmt(c.price * S.qty);
+  $('c-glow').style.background = 'radial-gradient(ellipse,' + c.col + '18,transparent 70%)';
+  $('cf-front').style.borderColor = c.col + '55';
+  var jn = $('jp-notice');
+  if (c.jp) { jn.style.display = 'inline-block'; $('open-btn').classList.add('jp'); }
+  else { jn.style.display = 'none'; $('open-btn').classList.remove('jp'); }
+}
+
+// Qty buttons
+document.querySelectorAll('.qb').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.qb').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    S.qty = parseInt(btn.dataset.qty);
+    $('case-price').textContent = fmt(CASES[S.selCase].price * S.qty);
+    sndClick();
+  });
+});
+
+// ═══════════════ CHANCES ═══════════════
+function renderChances() {
+  var rows = [
+    {name:'Consumer Grade',pct:'~40%',r:'consumer'},{name:'Industrial Grade',pct:'~25%',r:'industrial'},
+    {name:'Mil-Spec',pct:'~20%',r:'milspec'},{name:'Restricted',pct:'~10%',r:'restricted'},
+    {name:'Classified',pct:'~4%',r:'classified'},{name:'Covert',pct:'~0.74%',r:'covert'},
+    {name:'Knife / Gloves',pct:'~0.25%',r:'gold'},{name:'JACKPOT (Premium)',pct:'~0.01%',r:'jackpot'}
+  ];
+  var html = '';
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    html += '<div class="ch-row" style="border-color:'+RC[row.r]+(row.r==='jackpot'?';background:rgba(255,107,53,.05)':'')+'"><span class="ch-nm" style="color:'+RC[row.r]+'">'+row.name+'</span><span class="ch-pc">'+row.pct+'</span></div>';
+  }
+  $('ch-grid').innerHTML = html;
+}
+
+// ═══════════════ KEYS ═══════════════
+if($('buy-key-1')) $('buy-key-1').addEventListener('click', function() { buyKeys(1); });
+if($('buy-key-5')) $('buy-key-5').addEventListener('click', function() { buyKeys(5); });
+if($('buy-key-10')) $('buy-key-10').addEventListener('click', function() { buyKeys(10); });
+function buyKeys(n) {
+  var prices = {1:2.49, 5:11.00, 10:19.99};
+  var p = prices[n];
+  if (S.bal < p) { toast('❌ Not enough balance!'); return; }
+  S.bal -= p; S.keys += n; updateUI(); sndFunds();
+  toast('🔑 Got ' + n + ' key' + (n>1?'s':'') + '! Total: ' + S.keys);
+  sparkle('#e2b04a');
+}
+
+// ═══════════════ OPEN CASE ═══════════════
+if($('open-btn')) $('open-btn').addEventListener('click', openCase);
+function openCase() {
+  if (S.spinning) return;
+  var c = CASES[S.selCase];
+  var keysNeeded = c.jp ? S.qty * 2 : S.qty;
+  if (S.keys < keysNeeded) { toast('🔑 Need ' + keysNeeded + ' key' + (keysNeeded>1?'s':'') + '!'); return; }
+  var total = c.price * S.qty;
+  if (S.bal < total) { toast('❌ Not enough balance!'); return; }
+  S.bal -= total; S.keys -= keysNeeded;
+  S.stats.opened += S.qty; S.stats.spent += total;
+  updateUI();
+  S.spinning = true;
+  $('open-btn').disabled = true;
+  $('multi-res').classList.remove('show');
+  if (S.qty === 1) open3D();
+  else openMulti();
+}
+
+async function open3D() {
+  var result = rollItem(CASES[S.selCase].jp);
+  S.pending = result;
+  var c3d = $('c3d'), lid = $('c-lid'), keyEl = $('key-el');
+  $('reel-wrap').classList.remove('show');
+  $('multi-res').innerHTML = '';
+  $('multi-res').classList.remove('show');
+  c3d.style.transform = ''; lid.classList.remove('open');
+
+  await wait(100); sndKey();
+  keyEl.className = 'key-el drop';
+  await wait(850);
+
+  sndInsert(); keyEl.className = 'key-el insert';
+  $('c-slot').style.boxShadow = '0 0 10px rgba(226,176,74,.9)';
+  await wait(450);
+  $('c-slot').style.boxShadow = ''; keyEl.className = 'key-el';
+
+  await wait(180); sndShake();
+  c3d.classList.add('shaking');
+  await wait(700); c3d.classList.remove('shaking');
+
+  await wait(120); sndSpin();
+  c3d.classList.add('anim');
+  c3d.style.transition = 'transform 1.4s cubic-bezier(.4,0,.2,1)';
+  c3d.style.transform = 'rotateY(720deg) rotateX(18deg) scale(1.08)';
+  await wait(700);
+
+  sndLid(); lid.classList.add('open');
+  burstParts(CASES[S.selCase].col, 50);
+  $('rays').classList.add('show');
+  await wait(600);
+
+  c3d.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1)';
+  c3d.style.transform = 'rotateY(780deg) rotateX(22deg) scale(1.05)';
+  await wait(300);
+
+  // ── REEL SPIN ──
+  var reel = $('reel-wrap'), track = $('reel-track');
+  reel.classList.add('show');
+
+  // Scroll page so reel is visible
+  reel.scrollIntoView({behavior:'smooth', block:'center'});
+
+  // Build fake items + winner at position 52
+  var fakes = [];
+  for (var i = 0; i < 60; i++) fakes.push(rollItem(false));
+  var WIN_POS = 52;
+  fakes[WIN_POS] = result;
+
+  var html = '';
+  for (var i = 0; i < fakes.length; i++) {
+    var fi = fakes[i];
+    html += '<div class="ri r-'+fi.r+'"><span class="ri-em">'+fi.e+'</span><span class="ri-nm" style="color:'+RC[fi.r]+'">'+fi.name+'</span><span class="ri-wr">'+fi.wearFull+'</span></div>';
+  }
+  track.innerHTML = html;
+  track.style.transition = 'none';
+  track.style.transform = 'translateX(0)';
+
+  var IW = 136, cw = reel.clientWidth, center = cw / 2;
+  var targetX = -(WIN_POS * IW) + center - 68;
+
+  startTick();
+  await wait(50);
+  track.style.transition = 'transform 5.5s cubic-bezier(0.12, 0, 0.15, 1)';
+  track.style.transform = 'translateX(' + targetX + 'px)';
+
+  await wait(5700);
+
+  // Highlight winner
+  var winEl = track.querySelectorAll('.ri')[WIN_POS];
+  if (winEl) {
+    winEl.style.boxShadow = '0 0 20px ' + RC[result.r] + ', inset 0 0 20px rgba(255,255,255,0.1)';
+    winEl.style.transform = 'scale(1.08)';
+    winEl.style.zIndex = '5';
+    winEl.style.borderColor = RC[result.r];
+  }
+
+  await wait(400);
+  burstParts(RC[result.r], 80);
+  await wait(200);
+  addHist(result);
+  showWin(result);
+}
+
+function resetCase3D() {
+  var c3d = $('c3d'), lid = $('c-lid');
+  $('rays').classList.remove('show');
+  $('reel-wrap').classList.remove('show');
+  c3d.classList.remove('anim','shaking');
+  c3d.style.transition = 'transform .7s cubic-bezier(.34,1.56,.64,1)';
+  c3d.style.transform = '';
+  lid.classList.remove('open');
+  S.spinning = false;
+  $('open-btn').disabled = false;
+}
+
+async function openMulti() {
+  var results = [];
+  for (var i = 0; i < S.qty; i++) results.push(rollItem(CASES[S.selCase].jp));
+
+  var c3d = $('c3d'), lid = $('c-lid'), keyEl = $('key-el');
+  $('reel-wrap').classList.remove('show');
+  $('multi-res').innerHTML = '';
+  $('multi-res').classList.remove('show');
+  c3d.style.transform = ''; lid.classList.remove('open');
+
+  // ── Step 1: Key drop ──
+  await wait(100); sndKey();
+  keyEl.className = 'key-el drop';
+  await wait(850);
+
+  sndInsert(); keyEl.className = 'key-el insert';
+  $('c-slot').style.boxShadow = '0 0 10px rgba(226,176,74,.9)';
+  await wait(450);
+  $('c-slot').style.boxShadow = ''; keyEl.className = 'key-el';
+
+  // ── Step 2: Shake ──
+  await wait(150); sndShake();
+  c3d.classList.add('shaking');
+  await wait(700); c3d.classList.remove('shaking');
+
+  // ── Step 3: 3D Spin ──
+  await wait(100); sndSpin();
+  c3d.classList.add('anim');
+  c3d.style.transition = 'transform 1.2s cubic-bezier(.4,0,.2,1)';
+  c3d.style.transform = 'rotateY(720deg) rotateX(18deg) scale(1.08)';
+  await wait(600);
+
+  // ── Step 4: Lid open ──
+  sndLid(); lid.classList.add('open');
+  burstParts(CASES[S.selCase].col, 40);
+  $('rays').classList.add('show');
+  await wait(500);
+
+  c3d.style.transition = 'transform .4s cubic-bezier(.34,1.56,.64,1)';
+  c3d.style.transform = 'rotateY(780deg) rotateX(22deg) scale(1.05)';
+  await wait(300);
+
+  // ── Step 5: Reel spins sequentially for each item ──
+  var reel = $('reel-wrap'), track = $('reel-track');
+  reel.classList.add('show');
+  reel.scrollIntoView({behavior:'smooth', block:'center'});
+
+  for (var i = 0; i < results.length; i++) {
+    var result = results[i];
+
+    // Build reel track
+    var fakes = [];
+    for (var j = 0; j < 60; j++) fakes.push(rollItem(false));
+    var WIN_POS = 52;
+    fakes[WIN_POS] = result;
+
+    var html = '';
+    for (var j = 0; j < fakes.length; j++) {
+      var fi = fakes[j];
+      html += '<div class="ri r-'+fi.r+'"><span class="ri-em">'+fi.e+'</span><span class="ri-nm" style="color:'+RC[fi.r]+'">'+fi.name+'</span><span class="ri-wr">'+fi.wearFull+'</span></div>';
+    }
+    track.innerHTML = html;
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+
+    var IW = 136, cw = reel.clientWidth, center = cw / 2;
+    var targetX = -(WIN_POS * IW) + center - 68;
+
+    // Speed based on qty — faster for more items
+    var spinDur = S.qty <= 3 ? 4.5 : S.qty <= 5 ? 3.2 : 2.2;
+    startTick();
+
+    await wait(50);
+    track.style.transition = 'transform '+spinDur+'s cubic-bezier(0.12, 0, 0.15, 1)';
+    track.style.transform = 'translateX('+targetX+'px)';
+    await wait(spinDur * 1000 + 200);
+
+    // Highlight winner
+    var winEl = track.querySelectorAll('.ri')[WIN_POS];
+    if (winEl) {
+      winEl.style.boxShadow = '0 0 20px ' + RC[result.r];
+      winEl.style.transform = 'scale(1.08)';
+      winEl.style.borderColor = RC[result.r];
+    }
+
+    // Show mini result card
+    var mr = document.createElement('div');
+    mr.className = 'mr';
+    mr.style.borderColor = RC[result.r];
+    mr.style.animationDelay = '0s';
+    mr.innerHTML = '<span class="mr-em">'+result.e+'</span><div class="mr-nm" style="color:'+RC[result.r]+'">'+result.name+'</div><div class="mr-vl">$'+result.val.toFixed(2)+'</div>';
+    $('multi-res').appendChild(mr);
+    $('multi-res').classList.add('show');
+
+    burstParts(RC[result.r], 30);
+    sndReveal(result.r);
+
+    // Short pause between items (less pause for more items)
+    var pauseDur = S.qty <= 3 ? 600 : S.qty <= 5 ? 400 : 250;
+    await wait(pauseDur);
+  }
+
+  await wait(400);
+  $('rays').classList.remove('show');
+
+  // Add all to inventory
+  for (var i = 0; i < results.length; i++) {
+    S.inv.unshift(results[i]); addHist(results[i]);
+  }
+  var best = results.reduce(function(a,b) { return a.val>b.val?a:b; });
+  updateBest(best); updateUI();
+  var tv = results.reduce(function(s,i) { return s+i.val; }, 0);
+  toast('📦 ' + results.length + ' items — ' + fmt(tv));
+  sparkle(RC[best.r]);
+
+  // Reset case
+  resetCase3D();
+}
+
+// ═══════════════ WIN OVERLAY ═══════════════
+function showWin(it) {
+  var isJP = it.r === 'jackpot';
+  var col = RC[it.r];
+  var ov = $('ov'), card = $('ov-card');
+  ov.classList.toggle('show', false);
+  card.classList.toggle('jp-card', isJP);
+  $('ov-crown').style.display = isJP ? 'block' : 'none';
+  if (isJP) buildJpRays();
+  $('jp-rays').classList.toggle('show', isJP);
+  $('ov-icon').textContent = it.e;
+  $('ov-name').textContent = it.name;
+  $('ov-name').style.color = col;
+  $('ov-wear').textContent = it.wearFull;
+  $('ov-float').textContent = 'Float: ' + it.fl;
+  $('ov-val').textContent = fmt(it.val);
+  $('ov-val').className = 'ov-val' + (isJP ? ' jp' : '');
+  var badge = $('ov-badge');
+  badge.textContent = RN[it.r];
+  badge.style.color = col; badge.style.borderColor = col; badge.style.background = col + '18';
+  $('ov-st').innerHTML = it.isST ? '<div class="ov-st">★ STATTRAK™</div>' : '';
+  card.style.boxShadow = '0 0 60px ' + col + '28';
+  ovParticles(col, isJP ? 50 : 20);
+  setTimeout(function() { ov.classList.add('show'); }, 10);
+  sparkle(col); sndReveal(it.r);
+  updateBest(it);
+}
+
+function buildJpRays() {
+  var c = $('jp-rays'); c.innerHTML = '';
+  for (var i = 0; i < 12; i++) {
+    var r = document.createElement('div'); r.className = 'jpr';
+    r.style.transform = 'rotate(' + (i*30) + 'deg)';
+    r.style.animationDelay = (i * .14) + 's';
+    c.appendChild(r);
+  }
+}
+
+function ovParticles(col, n) {
+  var c = $('ov-parts'); c.innerHTML = '';
+  for (var i = 0; i < n; i++) {
+    var p = document.createElement('div'); p.className = 'op';
+    var sz = 3 + Math.random()*7;
+    p.style.cssText = 'width:'+sz+'px;height:'+sz+'px;left:50%;top:50%;background:'+col+';border-radius:'+(Math.random()>.5?'50%':'3px')+';--x:'+(Math.random()-.5)*380+'px;--y:'+(Math.random()-.5)*380+'px;--r:'+Math.random()*720+'deg;--d:'+(1+Math.random()*.8)+'s;--dd:'+Math.random()*.4+'s';
+    c.appendChild(p);
+  }
+}
+
+if($('ov-sell')) $('ov-sell').addEventListener('click', function() {
+  if (S.pending) { S.bal += S.pending.val; updateUI(); toast('💰 Sold for ' + fmt(S.pending.val)); sndSell(); S.pending = null; }
+  $('ov').classList.remove('show'); resetCase3D();
+});
+if($('ov-keep')) $('ov-keep').addEventListener('click', function() {
+  if (S.pending) { S.inv.unshift(S.pending); S.pending = null; updateUI(); toast('🎒 Added to inventory!'); sndClick(); }
+  $('ov').classList.remove('show'); resetCase3D();
+});
+if($('ov')) $('ov').addEventListener('click', function(e) {
+  if (e.target === $('ov')) {
+    if (S.pending) { S.inv.unshift(S.pending); S.pending = null; updateUI(); }
+    $('ov').classList.remove('show'); resetCase3D();
+  }
+});
+
+// ═══════════════ INVENTORY ═══════════════
+function renderInv() {
+  var g = $('inv-grid');
+  if (!S.inv.length) { g.innerHTML = '<div class="inv-empty">No items yet. Open some cases!</div>'; return; }
+  var html = '';
+  for (var i = 0; i < S.inv.length; i++) {
+    var it = S.inv[i];
+    html += '<div class="inv-item" data-ii="'+i+'" style="border-color:'+RC[it.r]+'30" title="Tap to inspect">';
+    if (it.isST) html += '<div class="ii-st"></div>';
+    html += '<span class="ii-em">'+it.e+'</span><div class="ii-nm" style="color:'+RC[it.r]+'">'+it.name+'</div><div class="ii-wr">'+it.wearFull+'</div><div class="ii-vl">$'+it.val.toFixed(2)+'</div></div>';
+  }
+  g.innerHTML = html;
+  g.querySelectorAll('.inv-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var i = parseInt(el.dataset.ii);
+      var it = S.inv[i]; if (!it) return;
+      openInspect(it, i);
+    });
+  });
+}
+
+if($('sell-all-btn')) $('sell-all-btn').addEventListener('click', function() {
+  if (!S.inv.length) return;
+  var t = S.inv.reduce(function(s,i) { return s+i.val; }, 0);
+  S.bal += t; S.inv = []; updateUI(); renderInv(); sndSell();
+  toast('💰 Sold all for ' + fmt(t));
+});
+
+// ═══════════════ HISTORY ═══════════════
+function addHist(it) { S.hist.unshift(Object.assign({ts:Date.now()}, it)); if (S.hist.length > 200) S.hist.pop(); }
+document.querySelectorAll('.filt').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filt').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active'); S.histFilt = btn.dataset.filt; renderHist();
+  });
+});
+function renderHist() {
+  var items = S.hist;
+  if (S.histFilt === 'covert') items = items.filter(function(i) { return i.r==='covert'||i.r==='gold'||i.r==='jackpot'; });
+  if (S.histFilt === 'jackpot') items = items.filter(function(i) { return i.r==='jackpot'; });
+  var el = $('hist-list');
+  if (!items.length) { el.innerHTML = '<div class="empty">No items match filter.</div>'; return; }
+  var html = '';
+  for (var i = 0; i < Math.min(items.length, 80); i++) {
+    var it = items[i];
+    html += '<div class="h-row" style="border-color:'+RC[it.r]+'"><div class="h-em">'+it.e+'</div><div class="h-inf"><div class="h-nm" style="color:'+RC[it.r]+'">'+it.name+'</div><div class="h-mt">'+it.wearFull+' • Float '+it.fl+(it.isST?' • StatTrak':'')+' • '+it.caseName+'</div></div><div class="h-vl">$'+it.val.toFixed(2)+'</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+// ═══════════════ TRADE UP ═══════════════
+function renderTuSlots() {
+  var html = '';
+  for (var i = 0; i < 10; i++) html += '<div class="slot" data-si="'+i+'">+<div class="slot-x">×</div></div>';
+  $('tu-slots').innerHTML = html;
+  $('tu-slots').querySelectorAll('.slot').forEach(function(el) {
+    el.addEventListener('click', function() { removeTuSlot(parseInt(el.dataset.si)); });
+  });
+}
+function renderTuPool() {
+  var pool = $('tu-pool');
+  var elig = S.inv.filter(function(i) { return i.r!=='gold'&&i.r!=='jackpot'; });
+  if (!elig.length) { pool.innerHTML = '<div class="empty">Open cases to get items!</div>'; return; }
+  var html = '';
+  for (var i = 0; i < elig.length; i++) {
+    var it = elig[i]; var idx = S.inv.indexOf(it);
+    html += '<div class="tp" data-idx="'+idx+'" style="border-color:'+RC[it.r]+'"><span class="tp-em">'+it.e+'</span><div class="tp-nm" style="color:'+RC[it.r]+'">'+it.name.replace('★ ','').substring(0,14)+'</div><div class="tp-vl">$'+it.val.toFixed(2)+'</div></div>';
+  }
+  pool.innerHTML = html;
+  pool.querySelectorAll('.tp').forEach(function(el) {
+    el.addEventListener('click', function() { addTuItem(parseInt(el.dataset.idx)); });
+  });
+}
+function addTuItem(idx) {
+  if (S.tuSel.length >= 10) { toast('Already 10 items!'); return; }
+  var it = S.inv[idx]; if (!it) return;
+  if (S.tuSel.length > 0 && it.r !== S.tuSel[0].r) { toast('❌ All must be same rarity!'); return; }
+  S.tuSel.push(Object.assign({invIdx:idx}, it));
+  S.inv.splice(idx, 1);
+  updateTuSlots(); renderTuPool();
+}
+function removeTuSlot(i) {
+  if (i >= S.tuSel.length) return;
+  S.inv.push(S.tuSel[i]); S.tuSel.splice(i, 1);
+  updateTuSlots(); renderTuPool();
+}
+function updateTuSlots() {
+  var n = S.tuSel.length; $('tu-cnt').textContent = n;
+  var slots = $('tu-slots').querySelectorAll('.slot');
+  for (var i = 0; i < 10; i++) {
+    var sl = slots[i]; if (!sl) continue;
+    if (i < n) {
+      var it = S.tuSel[i];
+      sl.className = 'slot filled'; sl.style.borderColor = RC[it.r];
+      sl.innerHTML = it.e + '<div class="slot-x">×</div>';
+    } else {
+      sl.className = 'slot'; sl.style.borderColor = ''; sl.innerHTML = '+<div class="slot-x">×</div>';
+    }
+  }
+  $('tu-btn').disabled = n !== 10;
+  if (n === 10) {
+    var nr = RUP[S.tuSel[0].r] || 'gold';
+    $('tu-info').innerHTML = 'Trading <b>10</b> ' + RN[S.tuSel[0].r] + ' → <b style="color:' + RC[nr] + '">' + RN[nr] + '</b>';
+  } else {
+    $('tu-info').textContent = 'Select 10 items of the same rarity';
+  }
+}
+if($('tu-btn')) $('tu-btn').addEventListener('click', function() {
+  if (S.tuSel.length < 10) return;
+  var r = S.tuSel[0].r, nr = RUP[r] || 'gold';
+  S.tuSel = []; updateTuSlots(); renderTuPool();
+  var pool = ITEMS.filter(function(i) { return i.r === nr; });
+  var it = rand(pool); var wear = rand(it.w);
+  var wm = {FN:1.85,MW:1.2,FT:.9,WW:.65,BS:.45};
+  var val = +(it.b * (wm[wear]||1) * (.9+Math.random()*.2)).toFixed(2);
+  var result = {name:it.name,e:it.e,r:nr,wear:wear,wearFull:WN[wear],fl:+(Math.random()*.999+.001).toFixed(4),isST:false,isSV:false,val:val,caseName:'Trade-Up'};
+  S.pending = result; addHist(result);
+  playTone(523,'sine',.2,.28); playTone(659,'sine',.2,.28,.07); playTone(784,'sine',.2,.28,.14); playNoise(.3,.15,.5);
+  showWin(result);
+  S.spinning = true; $('open-btn').disabled = true;
+});
+
+// ═══════════════ BATTLE ═══════════════
+function updateBSel() {
+  if (!$('b-case-sel') || !$('bpc-you')) return;
+  var c = CASES[parseInt($('b-case-sel').value) || 0];
+  if (!c) return;
+  var cost = (c.price * S.bRounds).toFixed(2);
+  $('bpc-you').textContent = 'Cost: $' + cost;
+  $('bpc-bot').textContent = 'Cost: $' + cost;
+}
+function renderBSel() {
+  var html = '';
+  for (var i = 0; i < CASES.length; i++) html += '<option value="'+i+'">'+CASES[i].em+' '+CASES[i].name+' — $'+CASES[i].price.toFixed(2)+'</option>';
+  $('b-case-sel').innerHTML = html;
+  if($('b-case-sel')) $('b-case-sel').addEventListener('change', updateBSel);
+  updateBSel();
+}
+document.querySelectorAll('.rb').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.rb').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active'); S.bRounds = parseInt(btn.dataset.rounds); updateBSel();
+  });
+});
+if($('battle-btn')) $('battle-btn').addEventListener('click', function() {
+  if (S.battleRunning) return;
+  var ci = parseInt($('b-case-sel').value) || 0;
+  var c = CASES[ci]; var cost = c.price * S.bRounds;
+  if (S.bal < cost) { toast('❌ Not enough balance!'); return; }
+  S.bal -= cost; S.stats.spent += cost; updateUI();
+  S.battleRunning = true; $('battle-btn').disabled = true;
+  ['you','bot'].forEach(function(p) {
+    $('bpi-'+p).innerHTML = ''; $('bpt-'+p).textContent = '$0.00';
+    $('bpr-'+p).className = 'bp-result';
+  });
+  var round = 0, youItems = [], botItems = [], origCase = S.selCase;
+  S.selCase = ci;
+  function next() {
+    if (round >= S.bRounds) {
+      S.selCase = origCase;
+      var yv = youItems.reduce(function(s,i){return s+i.val;},0);
+      var bv = botItems.reduce(function(s,i){return s+i.val;},0);
+      if (yv > bv) {
+        $('bpr-you').textContent = '🏆 WINNER!'; $('bpr-you').className = 'bp-result win';
+        $('bpr-bot').textContent = '💀 LOSER'; $('bpr-bot').className = 'bp-result lose';
+        S.bal += yv + bv; youItems.forEach(function(i){S.inv.push(i);}); updateUI();
+        toast('🏆 You won! +' + fmt(yv+bv)); sparkle('#4caf50');
+        playTone(392,'sine',.25,.3); playTone(523,'sine',.25,.3,.07); playTone(659,'sine',.25,.3,.14); playTone(784,'sine',.25,.3,.21); playTone(1047,'sine',.25,.3,.28);
+      } else if (bv > yv) {
+        $('bpr-you').textContent = '💀 YOU LOST'; $('bpr-you').className = 'bp-result lose';
+        $('bpr-bot').textContent = '🤖 BOT WINS'; $('bpr-bot').className = 'bp-result win';
+        toast('💀 Bot wins...'); playTone(392,'sawtooth',.25,.25); playTone(330,'sawtooth',.25,.25,.1); playTone(262,'sawtooth',.25,.25,.2);
+      } else {
+        $('bpr-you').textContent = '🤝 TIE'; $('bpr-you').className = 'bp-result tie';
+        $('bpr-bot').textContent = '🤝 TIE'; $('bpr-bot').className = 'bp-result tie';
+        S.bal += cost/2; updateUI(); toast('🤝 Tie! Refunded ' + fmt(cost/2));
+      }
+      S.battleRunning = false; $('battle-btn').disabled = false; return;
+    }
+    var yi = rollItem(c.jp), bi = rollItem(c.jp);
+    youItems.push(yi); botItems.push(bi);
+    var yv = youItems.reduce(function(s,i){return s+i.val;},0);
+    var bv = botItems.reduce(function(s,i){return s+i.val;},0);
+    function renderItems(arr, elId) {
+      var html = '';
+      for (var i = 0; i < arr.length; i++) {
+        var it = arr[i];
+        html += '<div class="bi" style="border-color:'+RC[it.r]+'"><span class="bi-em">'+it.e+'</span><div class="bi-nm" style="color:'+RC[it.r]+'">'+it.name.substring(0,12)+'</div><div class="bi-vl">$'+it.val.toFixed(2)+'</div></div>';
+      }
+      $(elId).innerHTML = html;
+    }
+    renderItems(youItems,'bpi-you'); renderItems(botItems,'bpi-bot');
+    $('bpt-you').textContent = fmt(yv); $('bpt-bot').textContent = fmt(bv);
+    round++; setTimeout(next, 580);
+  }
+  next();
+});
+
+// ═══════════════ MARKET ═══════════════
+var MKT = {
+  listings: [],       // all active listings
+  tickerMsgs: [],     // live activity messages
+  sliderPage: 0,
+  sliderFiltered: [],
+  CARDS_PER_PAGE: 6,
+  botIv: null,
+  tickerIv: null
+};
+var AVTS2 = ['😎','🤖','👾','🦊','🐺','🦅','🐉','🔥','⚡','💀','🎯','🏹','🛡️','🌟','🎮'];
+
+function mktTimeAgo(ts) {
+  var s = Math.floor((Date.now()-ts)/1000);
+  if (s < 5) return 'just now';
+  if (s < 60) return s+'s ago';
+  if (s < 3600) return Math.floor(s/60)+'m ago';
+  return Math.floor(s/3600)+'h ago';
+}
+
+function mktMakeListing(seller, isBot) {
+  var ro = {consumer:0,industrial:1,milspec:2,restricted:3,classified:4,covert:5,gold:6,jackpot:7};
+  var it = rand(ITEMS);
+  var wear = rand(it.w);
+  var wm = {FN:1.85,MW:1.2,FT:.9,WW:.65,BS:.45};
+  var isST = Math.random() < .1;
+  var bv = +(it.b * (wm[wear]||1) * (isST?1.55:1) * (.85+Math.random()*.3)).toFixed(2);
+  var pr = Math.max(.01, +(bv * (.88+Math.random()*.24)).toFixed(2));
+  var fl = +(Math.random()*.999+.001).toFixed(4);
+  var avIdx = Math.floor(Math.random()*AVTS2.length);
+  return {
+    id: Math.random().toString(36).substr(2,9),
+    name: it.name, e: it.e, r: it.r,
+    wear: wear, wearFull: WN[wear], fl: fl,
+    isST: isST, price: pr,
+    seller: seller || rand(USERS),
+    sellerAv: AVTS2[avIdx],
+    isBot: isBot !== false,
+    ts: Date.now(),
+    ro: ro[it.r]||0,
+    isNew: true
+  };
+}
+
+function mktInit() {
+  // Seed initial listings
+  MKT.listings = [];
+  for (var i = 0; i < 40; i++) {
+    var l = mktMakeListing(null, true);
+    l.ts = Date.now() - Math.floor(Math.random()*7200000);
+    l.isNew = false;
+    MKT.listings.push(l);
+  }
+  mktStartBots();
+  mktStartTicker();
+  mktRenderAll();
+  // Slider arrow events
+  if($('mkt-prev')) $('mkt-prev').addEventListener('click', function() { mktSliderGo(-1); });
+  if($('mkt-next')) $('mkt-next').addEventListener('click', function() { mktSliderGo(1); });
+  if($('mkt-prev2')) $('mkt-prev2').addEventListener('click', function() { mktSliderGo(-1); });
+  if($('mkt-next2')) $('mkt-next2').addEventListener('click', function() { mktSliderGo(1); });
+  // Filters
+  if($('mkt-q')) $('mkt-q').addEventListener('input', mktRenderAll);
+  if($('mkt-sort')) $('mkt-sort').addEventListener('change', mktRenderAll);
+  if($('mkt-rf')) $('mkt-rf').addEventListener('change', mktRenderAll);
+}
+
+function mktStartBots() {
+  if (MKT.botIv) clearInterval(MKT.botIv);
+  MKT.botIv = setInterval(function() {
+    if (!$('page-market').classList.contains('active')) return;
+    var action = Math.random();
+    if (action < 0.5) {
+      // Bot lists new item
+      var listing = mktMakeListing(null, true);
+      MKT.listings.unshift(listing);
+      if (MKT.listings.length > 80) MKT.listings.pop();
+      mktAddTicker('🤖 <b>'+listing.seller+'</b> listed <span style="color:'+RC[listing.r]+'">'+listing.e+' '+listing.name+'</span> for <b>$'+listing.price.toFixed(2)+'</b>');
+      pushMktNotif('listed', listing.e, 'NEW LISTING', listing.seller + ' · ' + listing.name, '$'+listing.price.toFixed(2));
+      mktRenderAll();
+    } else if (action < 0.85 && MKT.listings.length > 5) {
+      // Bot buys a random listing
+      var idx = Math.floor(Math.random() * Math.min(MKT.listings.length, 20));
+      var bought = MKT.listings[idx];
+      if (bought) {
+        var buyer = rand(USERS);
+        // If it's player's listing, player gets money
+        var playerOrder = S.mktOrders.find(function(o){return o.id===bought.id;});
+        if (playerOrder) {
+          S.bal += bought.price; updateUI();
+          S.mktOrders = S.mktOrders.filter(function(o){return o.id!==bought.id;});
+          var ii = S.inv.findIndex(function(i){return i.name===bought.name;});
+          if (ii !== -1) S.inv.splice(ii,1);
+          showSaleNotif(bought, bought.price);
+          renderOrders();
+          // Market notif
+          pushMktNotif('sold', bought.e, 'ITEM SOLD!', bought.name + ' · ' + bought.wearFull, '+$'+bought.price.toFixed(2));
+          // Sound
+          playTone(880,'sine',.08,.3); playTone(1100,'sine',.1,.3,.08); playTone(1320,'sine',.15,.3,.16);
+        } else {
+          // Bot-to-bot — still show activity notif
+          pushMktNotif('bought', bought.e, 'MARKET ACTIVITY', buyer + ' bought ' + bought.name, '$'+bought.price.toFixed(2));
+          // Subtle tick sound
+          playTone(440,'sine',.06,.1);
+        }
+        mktAddTicker('💰 <b>'+buyer+'</b> bought <span style="color:'+RC[bought.r]+'">'+bought.e+' '+bought.name+'</span> for <b>$'+bought.price.toFixed(2)+'</b>');
+        MKT.listings.splice(idx, 1);
+        mktRenderAll();
+      }
+    }
+  }, 2500 + Math.random()*1500);
+}
+
+function mktStartTicker() {
+  if (MKT.tickerIv) clearInterval(MKT.tickerIv);
+  // Build initial ticker
+  MKT.tickerMsgs = [];
+  for (var i = 0; i < 8; i++) {
+    var it = rand(ITEMS), user = rand(USERS);
+    var price = +(it.b * (.8+Math.random()*.6)).toFixed(2);
+    MKT.tickerMsgs.push('💰 <b>'+user+'</b> bought <span style="color:'+RC[it.r]+'">'+it.e+' '+it.name+'</span> for $'+price.toFixed(2));
+  }
+  mktRenderTicker();
+}
+
+function mktAddTicker(msg) {
+  MKT.tickerMsgs.unshift(msg);
+  if (MKT.tickerMsgs.length > 20) MKT.tickerMsgs.pop();
+  mktRenderTicker();
+}
+
+function mktRenderTicker() {
+  var el = $('mkt-ticker');
+  if (!el) return;
+  var html = '<div class="mkt-ticker-inner">';
+  for (var i = 0; i < MKT.tickerMsgs.length; i++) {
+    html += '<span>' + MKT.tickerMsgs[i] + '</span>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function mktGetFiltered() {
+  var q = ($('mkt-q') ? $('mkt-q').value : '').toLowerCase();
+  var sort = $('mkt-sort') ? $('mkt-sort').value : 'new';
+  var rf = $('mkt-rf') ? $('mkt-rf').value : 'all';
+  var items = MKT.listings.filter(function(i) {
+    return (!q || i.name.toLowerCase().indexOf(q) >= 0) && (rf==='all' || i.r===rf);
+  });
+  if (sort==='price-asc') items.sort(function(a,b){return a.price-b.price;});
+  else if (sort==='price-desc') items.sort(function(a,b){return b.price-a.price;});
+  else if (sort==='rarity') items.sort(function(a,b){return b.ro-a.ro;});
+  else items.sort(function(a,b){return b.ts-a.ts;});
+  return items;
+}
+
+function mktRenderAll() {
+  MKT.sliderFiltered = mktGetFiltered();
+  var total = MKT.sliderFiltered.length;
+  var pages = Math.max(1, Math.ceil(total / MKT.CARDS_PER_PAGE));
+  if (MKT.sliderPage >= pages) MKT.sliderPage = pages - 1;
+
+  if ($('mkt-count')) $('mkt-count').textContent = total + ' listings';
+
+  var start = MKT.sliderPage * MKT.CARDS_PER_PAGE;
+  var pageItems = MKT.sliderFiltered.slice(start, start + MKT.CARDS_PER_PAGE);
+
+  var track = $('mkt-track');
+  if (!track) return;
+
+  if (!pageItems.length) {
+    track.innerHTML = '<div class="empty" style="padding:40px;grid-column:1/-1">No listings found.</div>';
+  } else {
+    var html = '';
+    for (var i = 0; i < pageItems.length; i++) {
+      var it = pageItems[i];
+      var col = RC[it.r];
+      var timeStr = mktTimeAgo(it.ts);
+      html += '<div class="mkt-card'+(it.isNew?' is-new':'')+'" style="border-color:'+col+'30">';
+      html += '<div style="position:absolute;top:0;left:0;right:0;height:2px;background:'+col+'"></div>';
+      html += '<div class="mc-tags">';
+      if (it.isBot) html += '<span class="mc-tag mc-tag-bot">BOT</span>';
+      if (it.isST) html += '<span class="mc-tag mc-tag-st">ST™</span>';
+      html += '</div>';
+      html += '<div class="mc-icon-wrap"><span class="mc-icon-big">'+it.e+'</span></div>';
+      html += '<div class="mc-name" style="color:'+col+'">'+it.name+'</div>';
+      html += '<div class="mc-meta">'+it.wearFull+' · '+it.fl+'</div>';
+      html += '<div class="mc-float-bar"><div class="mc-float-fill" style="width:'+(it.fl*100).toFixed(1)+'%"></div></div>';
+      html += '<div class="mc-sep"></div>';
+      html += '<div class="mc-seller"><div class="mc-av">'+it.sellerAv+'</div>';
+      html += '<div class="mc-seller-nm">'+it.seller+'</div>';
+      html += '<div class="mc-time">'+timeStr+'</div></div>';
+      html += '<div class="mc-price-row"><div class="mc-price">$'+it.price.toFixed(2)+'</div></div>';
+      html += '<button class="mc-buy" data-mid="'+it.id+'">🛒 Buy Now</button>';
+      html += '</div>';
+    }
+    track.innerHTML = html;
+    track.querySelectorAll('.mc-buy').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        mktBuy(btn.dataset.mid);
+      });
+    });
+  }
+
+  // Dots
+  var dotsEl = $('mkt-dots');
+  if (dotsEl) {
+    var dotHtml = '';
+    for (var d = 0; d < Math.min(pages, 15); d++) {
+      dotHtml += '<div class="mkt-dot'+(d===MKT.sliderPage?' active':'')+'" data-pg="'+d+'"></div>';
+    }
+    dotsEl.innerHTML = dotHtml;
+    dotsEl.querySelectorAll('.mkt-dot').forEach(function(dot) {
+      dot.addEventListener('click', function() {
+        MKT.sliderPage = parseInt(dot.dataset.pg);
+        mktRenderAll();
+      });
+    });
+  }
+
+  var prevBtn = $('mkt-prev'), nextBtn = $('mkt-next');
+  var prevBtn2 = $('mkt-prev2'), nextBtn2 = $('mkt-next2');
+  var pageInfo = $('mkt-page-info');
+  if (prevBtn) prevBtn.disabled = MKT.sliderPage === 0;
+  if (nextBtn) nextBtn.disabled = MKT.sliderPage >= pages - 1;
+  if (prevBtn2) prevBtn2.disabled = MKT.sliderPage === 0;
+  if (nextBtn2) nextBtn2.disabled = MKT.sliderPage >= pages - 1;
+  if (pageInfo) pageInfo.textContent = (MKT.sliderPage + 1) + ' / ' + pages;
+}
+
+function mktSliderGo(dir) {
+  var pages = Math.max(1, Math.ceil(MKT.sliderFiltered.length / MKT.CARDS_PER_PAGE));
+  MKT.sliderPage = Math.max(0, Math.min(pages-1, MKT.sliderPage + dir));
+  mktRenderAll();
+}
+
+function mktBuy(id) {
+  var idx = MKT.listings.findIndex(function(i){return i.id===id;});
+  if (idx === -1) { toast('❌ Item already sold!'); mktRenderAll(); return; }
+  var it = MKT.listings[idx];
+  // Show confirm modal
+  var col = RC[it.r];
+  $('buy-preview').innerHTML =
+    '<div class="mip-icon">'+it.e+'</div>' +
+    '<div class="mip-info">' +
+      '<div class="mip-name" style="color:'+col+'">'+it.name+(it.isST?' <span style="color:orange;font-size:9px">ST</span>':'')+'</div>'+
+      '<div class="mip-wear">'+it.wearFull+' • Float: '+it.fl+'</div>'+
+      '<div class="mip-price">$'+it.price.toFixed(2)+'</div>'+
+      '<div class="mip-seller">👤 '+it.seller+(it.isBot?' 🤖':'')+'</div>'+
+    '</div>';
+  $('buy-info').innerHTML = 'Your balance: <b>'+fmt(S.bal)+'</b><br>After purchase: <b style="color:'+(S.bal>=it.price?'var(--green)':'var(--red)')+'">'+fmt(S.bal-it.price)+'</b>';
+  $('buy-modal').classList.add('show');
+  // Store pending buy
+  $('buy-confirm-btn').onclick = function() {
+    $('buy-modal').classList.remove('show');
+    var i2 = MKT.listings.findIndex(function(x){return x.id===id;});
+    if (i2 === -1) { toast('❌ Already sold!'); return; }
+    var item = MKT.listings[i2];
+    if (S.bal < item.price) { toast('❌ Not enough balance!'); return; }
+    S.bal -= item.price; S.stats.spent += item.price;
+    S.inv.unshift({name:item.name,e:item.e,r:item.r,wear:item.wear,wearFull:item.wearFull,fl:item.fl,isST:item.isST,isSV:false,val:item.price,caseName:'Market'});
+    MKT.listings.splice(i2, 1);
+    mktAddTicker('🛒 <b>YOU</b> bought <span style="color:'+RC[item.r]+'">'+item.e+' '+item.name+'</span> for <b>$'+item.price.toFixed(2)+'</b>');
+    updateUI(); mktRenderAll(); sndSell();
+    toast('🛒 Got ' + item.name + ' for $' + item.price.toFixed(2)); sparkle(RC[item.r]);
+  };
+}
+
+function renderMkt() {
+  switchMktTab(S.mktSub);
+}
+
+document.querySelectorAll('.mkt-tab-btn[data-mkt]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.mkt-tab-btn[data-mkt]').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active'); switchMktTab(btn.dataset.mkt);
+  });
+});
+
+function switchMktTab(tab) {
+  S.mktSub = tab;
+  $('mkt-browse').style.display = tab==='browse'?'block':'none';
+  $('mkt-sell').style.display = tab==='sell'?'block':'none';
+  $('mkt-orders').style.display = tab==='orders'?'block':'none';
+  if (tab==='browse') mktRenderAll();
+  if (tab==='sell') renderSell();
+  if (tab==='orders') renderOrders();
+}
+
+function renderSell() {
+  var g = $('sell-grid');
+  if (!S.inv.length) { g.innerHTML = '<div class="empty">No items to sell.</div>'; return; }
+  // Build map: invIdx -> order
+  var listedMap = {};
+  S.mktOrders.forEach(function(o){ listedMap[o.invRef] = o; });
+  var html = '';
+  for (var i = 0; i < S.inv.length; i++) {
+    var it = S.inv[i];
+    var order = listedMap[i];
+    var isListed = !!order;
+    html += '<div class="sell-item'+(isListed?' listed':'')+'" data-sii="'+i+'" data-oid="'+(isListed?order.id:'')+'">';
+    if (it.isST) html += '<div class="ii-st"></div>';
+    html += '<span class="si-em">'+it.e+'</span>';
+    html += '<div class="si-nm" style="color:'+RC[it.r]+'">'+it.name+'</div>';
+    html += '<div class="si-vl">$'+it.val.toFixed(2)+'</div>';
+    if (isListed) {
+      html += '<div class="si-listed-price">Listed: <b style="color:var(--gold)">$'+order.price.toFixed(2)+'</b></div>';
+      html += '<div class="si-actions">';
+      html += '<button class="si-btn si-edit" data-sii="'+i+'">✏️ Edit</button>';
+      html += '<button class="si-btn si-delist" data-oid="'+order.id+'">❌ Delist</button>';
+      html += '</div>';
+    } else {
+      html += '<div class="si-st" style="color:var(--dim)">Tap to list</div>';
+    }
+    html += '</div>';
+  }
+  g.innerHTML = html;
+
+  // Not listed — tap to list
+  g.querySelectorAll('.sell-item:not(.listed)').forEach(function(el) {
+    el.addEventListener('click', function() { listItem(parseInt(el.dataset.sii)); });
+  });
+
+  // Edit price button
+  g.querySelectorAll('.si-edit').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var i = parseInt(btn.dataset.sii);
+      var order = S.mktOrders.find(function(o){ return o.invRef === i; });
+      if (!order) return;
+      showEditPriceModal(i, order);
+    });
+  });
+
+  // Delist button
+  g.querySelectorAll('.si-delist').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var oid = btn.dataset.oid;
+      var idx = S.mktOrders.findIndex(function(o){ return o.id === oid; });
+      if (idx === -1) return;
+      var removed = S.mktOrders[idx];
+      S.mktOrders.splice(idx, 1);
+      MKT.listings = MKT.listings.filter(function(l){ return l.id !== oid; });
+      renderSell(); mktRenderAll();
+      toast('📤 ' + removed.name + ' delisted.');
+      sndClick();
+    });
+  });
+}
+
+function showEditPriceModal(invIdx, order) {
+  var it = S.inv[invIdx]; if (!it) return;
+  var col = RC[it.r];
+  var mktPrice = +(it.val).toFixed(2);
+  var lowPrice = +(it.val * .85).toFixed(2);
+  var highPrice = +(it.val * 1.2).toFixed(2);
+
+  $('sell-preview').innerHTML =
+    '<div class="mip-icon">'+it.e+'</div>' +
+    '<div class="mip-info">' +
+      '<div class="mip-name" style="color:'+col+'">'+it.name+'</div>'+
+      '<div class="mip-wear">'+it.wearFull+'</div>'+
+      '<div class="mip-price" style="font-size:12px;color:var(--dim)">Currently listed: <b style="color:var(--gold)">$'+order.price.toFixed(2)+'</b></div>'+
+    '</div>';
+
+  $('pp-low-val').textContent = '$'+lowPrice.toFixed(2);
+  $('pp-mid-val').textContent = '$'+mktPrice.toFixed(2);
+  $('pp-high-val').textContent = '$'+highPrice.toFixed(2);
+  $('sell-price-input').value = order.price.toFixed(2);
+  $('sell-price-note').textContent = 'Edit your listing price';
+
+  document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+
+  if($('pp-low')) $('pp-low').onclick = function() {
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('pp-low').classList.add('active');
+    $('sell-price-input').value = lowPrice.toFixed(2);
+    $('sell-price-note').textContent = 'Below market — sells fast!';
+  };
+  if($('pp-mid')) $('pp-mid').onclick = function() {
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('pp-mid').classList.add('active');
+    $('sell-price-input').value = mktPrice.toFixed(2);
+    $('sell-price-note').textContent = 'Market price';
+  };
+  if($('pp-high')) $('pp-high').onclick = function() {
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('pp-high').classList.add('active');
+    $('sell-price-input').value = highPrice.toFixed(2);
+    $('sell-price-note').textContent = 'Above market — may take longer';
+  };
+
+  // Change confirm button to "Update Price"
+  var confirmBtn = $('sell-confirm-btn');
+  if (confirmBtn) {
+    confirmBtn.textContent = '✏️ Update Price';
+    confirmBtn.onclick = function() {
+      var newPrice = Math.max(0.01, parseFloat($('sell-price-input').value) || mktPrice);
+      newPrice = +newPrice.toFixed(2);
+      $('sell-modal').classList.remove('show');
+      // Update order
+      order.price = newPrice;
+      // Update market listing
+      var listing = MKT.listings.find(function(l){ return l.id === order.id; });
+      if (listing) listing.price = newPrice;
+      renderSell(); mktRenderAll();
+      mktAddTicker('✏️ <b>YOU</b> updated <span style="color:'+col+'">'+it.name+'</span> to <b>$'+newPrice.toFixed(2)+'</b>');
+      toast('✅ Price updated to $' + newPrice.toFixed(2));
+      sndClick();
+      // Reset confirm btn text
+      confirmBtn.textContent = '📤 List Item';
+    };
+  }
+
+  $('sell-modal').classList.add('show');
+}
+
+function listItem(i) {
+  var it = S.inv[i]; if (!it) return;
+  var col = RC[it.r];
+  var mktPrice = +(it.val * 1.0).toFixed(2);
+  var lowPrice = +(it.val * .85).toFixed(2);
+  var highPrice = +(it.val * 1.2).toFixed(2);
+  var chosenPrice = mktPrice;
+
+  // Show sell modal
+  $('sell-preview').innerHTML =
+    '<div class="mip-icon">'+it.e+'</div>' +
+    '<div class="mip-info">' +
+      '<div class="mip-name" style="color:'+col+'">'+it.name+(it.isST?' <span style="color:orange;font-size:9px">ST</span>':'')+'</div>'+
+      '<div class="mip-wear">'+it.wearFull+'</div>'+
+      '<div class="mip-price">Est. Value: $'+it.val.toFixed(2)+'</div>'+
+    '</div>';
+
+  $('pp-low-val').textContent = '$'+lowPrice.toFixed(2);
+  $('pp-mid-val').textContent = '$'+mktPrice.toFixed(2);
+  $('pp-high-val').textContent = '$'+highPrice.toFixed(2);
+  $('sell-price-input').value = mktPrice.toFixed(2);
+  $('sell-price-note').textContent = 'Market price — bots likely to buy within seconds';
+
+  // Reset active preset
+  document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+  $('pp-mid').classList.add('active');
+
+  function setPrice(p, note) {
+    chosenPrice = p;
+    $('sell-price-input').value = p.toFixed(2);
+    $('sell-price-note').textContent = note;
+  }
+
+  $('pp-low').onclick = function() {
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('pp-low').classList.add('active');
+    setPrice(lowPrice, 'Below market — sells very fast!');
+  };
+  $('pp-mid').onclick = function() {
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('pp-mid').classList.add('active');
+    setPrice(mktPrice, 'Market price — bots likely to buy within seconds');
+  };
+  $('pp-high').onclick = function() {
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('pp-high').classList.add('active');
+    setPrice(highPrice, 'Above market — may take longer to sell');
+  };
+  $('sell-price-input').oninput = function() {
+    chosenPrice = parseFloat(this.value) || mktPrice;
+    document.querySelectorAll('.price-preset').forEach(function(b){b.classList.remove('active');});
+    $('sell-price-note').textContent = 'Custom price';
+  };
+
+  $('sell-modal').classList.add('show');
+
+  $('sell-confirm-btn').onclick = function() {
+    var lp = Math.max(0.01, parseFloat($('sell-price-input').value) || mktPrice);
+    lp = +lp.toFixed(2);
+    $('sell-modal').classList.remove('show');
+    var oid = Math.random().toString(36).substr(2,9);
+    var listing = {
+      id:oid, name:it.name, e:it.e, r:it.r,
+      wear:it.wear, wearFull:it.wearFull, fl:it.fl||0,
+      isST:it.isST, price:lp,
+      seller:'YOU', sellerAv:'👤', isBot:false,
+      ts:Date.now(),
+      ro:{consumer:0,industrial:1,milspec:2,restricted:3,classified:4,covert:5,gold:6,jackpot:7}[it.r]||0,
+      isNew:true
+    };
+    MKT.listings.unshift(listing);
+    S.mktOrders.push({id:oid,invRef:i,name:it.name,e:it.e,r:it.r,wearFull:it.wearFull,price:lp,ts:Date.now()});
+    mktAddTicker('📤 <b>YOU</b> listed <span style="color:'+RC[it.r]+'">'+it.e+' '+it.name+'</span> for <b>$'+lp.toFixed(2)+'</b>');
+    renderSell(); mktRenderAll();
+    toast('💹 Listed ' + it.name + ' for $' + lp.toFixed(2)); sndClick();
+  };
+}
+
+function renderOrders() {
+  var el = $('orders-list');
+  if (!S.mktOrders.length) { el.innerHTML = '<div class="empty">No active listings.</div>'; return; }
+  var html = '';
+  for (var i = 0; i < S.mktOrders.length; i++) {
+    var o = S.mktOrders[i];
+    html += '<div class="order"><div class="o-em">'+o.e+'</div><div class="o-inf"><div class="o-nm" style="color:'+RC[o.r]+'">'+o.name+'</div><div class="o-mt">'+o.wearFull+' • '+mktTimeAgo(o.ts)+'</div></div><div class="o-pr">$'+o.price.toFixed(2)+'</div><button class="dl-btn" data-oid="'+o.id+'">Delist</button></div>';
+  }
+  el.innerHTML = html;
+  el.querySelectorAll('.dl-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = S.mktOrders.findIndex(function(o){return o.id===btn.dataset.oid;});
+      if (idx !== -1) {
+        var removed = S.mktOrders[idx];
+        S.mktOrders.splice(idx, 1);
+        MKT.listings = MKT.listings.filter(function(l){return l.id!==removed.id;});
+        renderOrders(); mktRenderAll(); toast('📤 Listing removed.');
+      }
+    });
+  });
+}
+
+// ── MODAL CLOSE BUTTONS ──
+document.addEventListener('DOMContentLoaded', function() {});
+// These run after DOM ready via init
+function initModalBtns() {
+  function safe(id, ev, fn) { var el=$(''+id); if(el) el.addEventListener(ev,fn); }
+  safe('buy-cancel-btn','click',function(){$('buy-modal').classList.remove('show');});
+  safe('sell-cancel-btn','click',function(){$('sell-modal').classList.remove('show');});
+  safe('sale-notif-close','click',hideSaleNotif);
+  safe('buy-modal','click',function(e){if(e.target===$('buy-modal'))$('buy-modal').classList.remove('show');});
+  safe('sell-modal','click',function(e){if(e.target===$('sell-modal'))$('sell-modal').classList.remove('show');});
+}
+
+// ── SALE NOTIFICATION ──
+var _saleNotifT;
+function showSaleNotif(item, price) {
+  $('sale-notif-icon').textContent = item.e;
+  $('sale-notif-msg').innerHTML = '<b style="color:'+RC[item.r]+'">'+item.name+'</b> sold for <b style="color:var(--green)">$'+price.toFixed(2)+'</b>!';
+  $('sale-notif').classList.add('show');
+  clearTimeout(_saleNotifT);
+  _saleNotifT = setTimeout(hideSaleNotif, 5000);
+  // coin sound
+  playTone(880,'sine',.1,.3); playTone(1100,'sine',.1,.3,.08); playTone(1320,'sine',.15,.3,.16);
+  sparkle('#4caf50');
+}
+function hideSaleNotif() { $('sale-notif').classList.remove('show'); }
+
+
+function genPgHist(base, tf) {
+  var pts = {'1h':60,'24h':96,'7d':168,'30d':120}[tf] || 60;
+  var vol = {'1h':.008,'24h':.02,'7d':.05,'30d':.12}[tf] || .01;
+  var h = [], p = base * (.85+Math.random()*.3);
+  for (var i = 0; i < pts; i++) { p = Math.max(.01, p + (Math.random()-.49)*vol*p); h.push(+p.toFixed(2)); }
+  h[h.length-1] = +(base*(.9+Math.random()*.2)).toFixed(2);
+  return h;
+}
+function initPg() {
+  S.pgItems = ITEMS.map(function(it, i) { return Object.assign({}, it, {curPr:+(it.b*(1.1+Math.random()*.4)).toFixed(2), idx:i}); });
+  S.pgFiltered = S.pgItems.slice();
+  S.pgHistories = {};
+  S.pgItems.forEach(function(it) {
+    S.pgHistories[it.name] = {'1h':genPgHist(it.curPr,'1h'),'24h':genPgHist(it.curPr,'24h'),'7d':genPgHist(it.curPr,'7d'),'30d':genPgHist(it.curPr,'30d')};
+  });
+  renderPgList(); drawChart(0);
+  if (S.pgIv) clearInterval(S.pgIv);
+  S.pgIv = setInterval(function() {
+    if (!$('page-pricegraph').classList.contains('active')) { clearInterval(S.pgIv); return; }
+    S.pgItems.forEach(function(it) {
+      var ch = (Math.random()-.49)*.006*it.curPr;
+      it.curPr = Math.max(.01, +(it.curPr+ch).toFixed(2));
+      var h = S.pgHistories[it.name]['1h']; h.push(it.curPr); if(h.length>120)h.shift();
+    });
+    renderPgList(); drawChart(S.pgSel);
+  }, 2000);
+}
+document.querySelectorAll('.pg-tf').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.pg-tf').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active'); S.pgTf = btn.dataset.tf; drawChart(S.pgSel);
+  });
+});
+if($('pg-search')) $('pg-search').addEventListener('input', function() {
+  var q = this.value.toLowerCase();
+  S.pgFiltered = q ? S.pgItems.filter(function(i){return i.name.toLowerCase().indexOf(q)>=0;}) : S.pgItems.slice();
+  renderPgList();
+});
+function renderPgList() {
+  var html = '';
+  for (var i = 0; i < S.pgFiltered.length; i++) {
+    var it = S.pgFiltered[i];
+    var h = S.pgHistories[it.name][S.pgTf];
+    var chg = (((h[h.length-1]-h[0])/h[0])*100).toFixed(2);
+    var up = chg >= 0;
+    html += '<div class="pg-row'+(S.pgSel===it.idx?' active':'')+'" data-pgidx="'+it.idx+'"><div class="pg-em">'+it.e+'</div><div class="pg-inf"><div class="pg-nm" style="color:'+RC[it.r]+'">'+it.name+'</div><div class="pg-pr">$'+it.curPr.toFixed(2)+'</div></div><div class="pg-chg" style="color:'+(up?'#4caf50':'#e84040')+'">'+(up?'▲':'▼')+Math.abs(chg)+'%</div></div>';
+  }
+  $('pg-list').innerHTML = html || '<div class="empty">No items found.</div>';
+  $('pg-list').querySelectorAll('.pg-row').forEach(function(el) {
+    el.addEventListener('click', function() { S.pgSel = parseInt(el.dataset.pgidx); renderPgList(); drawChart(S.pgSel); });
+  });
+}
+function drawChart(idx) {
+  var it = S.pgItems[idx]; if (!it) return;
+  var h = S.pgHistories[it.name][S.pgTf];
+  var canvas = $('pgc'), ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var first = h[0], last = h[h.length-1];
+  var chg = (((last-first)/first)*100).toFixed(2), up = chg >= 0;
+  var lc = up ? '#4caf50' : '#e84040', fc = up ? 'rgba(76,175,80,.07)' : 'rgba(232,64,64,.07)';
+  var mn = Math.min.apply(null,h)*.995, mx = Math.max.apply(null,h)*1.005, rng = mx-mn||1;
+  var pL=52,pR=16,pT=16,pB=28, cW=W-pL-pR, cH=H-pT-pB;
+  function xO(i){return (i/(h.length-1))*cW+pL;}
+  function yO(v){return cH-((v-mn)/rng)*cH+pT;}
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){var y=pT+(i/4)*cH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='10px Rajdhani,sans-serif';ctx.textAlign='right';ctx.fillText('$'+(mx-i*(rng/4)).toFixed(2),pL-3,y+4);}
+  ctx.beginPath();ctx.moveTo(xO(0),yO(h[0]));
+  for(var i=1;i<h.length;i++)ctx.lineTo(xO(i),yO(h[i]));
+  ctx.lineTo(xO(h.length-1),H-pB);ctx.lineTo(xO(0),H-pB);ctx.closePath();ctx.fillStyle=fc;ctx.fill();
+  ctx.beginPath();ctx.moveTo(xO(0),yO(h[0]));
+  for(var i=1;i<h.length;i++)ctx.lineTo(xO(i),yO(h[i]));
+  ctx.strokeStyle=lc;ctx.lineWidth=2;ctx.lineJoin='round';ctx.stroke();
+  var lx=xO(h.length-1),ly=yO(last);
+  ctx.beginPath();ctx.arc(lx,ly,5,0,Math.PI*2);ctx.fillStyle=lc;ctx.fill();
+  $('pg-hnm').textContent=it.e+' '+it.name; $('pg-hnm').style.color=RC[it.r];
+  $('pg-hpr').textContent='$'+last.toFixed(2);
+  var ce=$('pg-hch');ce.textContent=(up?'▲ +:':'▼ ')+chg+'%';ce.style.color=lc;ce.style.background=up?'rgba(76,175,80,.1)':'rgba(232,64,64,.1)';ce.style.border='1px solid '+lc+'44';
+  $('pg-stats').innerHTML='<div class="pg-st"><div class="pg-sv">$'+Math.min.apply(null,h).toFixed(2)+'</div><div class="pg-sl">Low</div></div><div class="pg-st"><div class="pg-sv">$'+Math.max.apply(null,h).toFixed(2)+'</div><div class="pg-sl">High</div></div><div class="pg-st"><div class="pg-sv">$'+first.toFixed(2)+'</div><div class="pg-sl">Open</div></div><div class="pg-st"><div class="pg-sv">$'+last.toFixed(2)+'</div><div class="pg-sl">Current</div></div><div class="pg-st" style="cursor:pointer" id="pg-buy-btn"><div class="pg-sv" style="color:var(--green)">🛒 BUY</div><div class="pg-sl">Add to Inv</div></div>';
+  if($('pg-buy-btn')) $('pg-buy-btn').addEventListener('click', function() {
+    if(S.bal<it.curPr){toast('❌ Not enough!');return;}
+    S.bal-=it.curPr; var wear=rand(it.w);
+    S.inv.unshift({name:it.name,e:it.e,r:it.r,wear:wear,wearFull:WN[wear],fl:+(Math.random()*.999+.001).toFixed(4),isST:false,isSV:false,val:it.curPr,caseName:'Price Graph'});
+    updateUI(); sndSell(); toast('🛒 Bought '+it.name+' for $'+it.curPr.toFixed(2)); sparkle(RC[it.r]);
+  });
+}
+
+// ═══════════════ LEADERBOARD ═══════════════
+document.querySelectorAll('.lb-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.lb-tab').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active'); S.lbKey = btn.dataset.lb; renderLb();
+  });
+});
+function renderLb() {
+  var fakes = USERS.map(function(name, i) {
+    return {name:name,av:AVTS[i%AVTS.length],opened:Math.floor(Math.random()*2000+50),spent:+(Math.random()*20000+100).toFixed(2),bestVal:+(Math.random()*8000+50).toFixed(2),bestE:rand(ITEMS).e,invVal:+(Math.random()*5000+10).toFixed(2)};
+  });
+  var you = {name:'YOU',av:'👤',opened:S.stats.opened,spent:S.stats.spent,bestVal:S.stats.best?S.stats.best.val:0,bestE:S.stats.best?S.stats.best.e:'❓',invVal:S.inv.reduce(function(s,i){return s+i.val;},0)};
+  var all = fakes.concat([you]);
+  var sk = {value:'invVal',opened:'opened',best:'bestVal',spent:'spent'}[S.lbKey];
+  all.sort(function(a,b){return b[sk]-a[sk];});
+  var yr = all.findIndex(function(p){return p.name==='YOU';})+1;
+  var sfx = yr===1?'st':yr===2?'nd':yr===3?'rd':'th';
+  var vlbls = {value:fmt(you.invVal)+' inv',opened:you.opened+' cases',best:fmt(you.bestVal)+' best',spent:fmt(you.spent)+' spent'};
+  $('lb-you').innerHTML = '<div class="lb-you-rk">#'+yr+'</div><div><div class="lb-you-nm">👤 You — '+yr+sfx+' Place</div><div class="lb-you-vl">'+vlbls[S.lbKey]+'</div></div>';
+  var medals = ['🥇','🥈','🥉'], html = '';
+  for (var i = 0; i < Math.min(all.length,20); i++) {
+    var p = all[i], rk = i+1;
+    var cls = rk===1?'lb-row g':rk===2?'lb-row s':rk===3?'lb-row b':'lb-row';
+    var rkEl = rk<=3 ? '<div class="lb-rk" style="color:'+['#FFD700','#C0C0C0','#CD7F32'][rk-1]+'">'+medals[rk-1]+'</div>' : '<div class="lb-rk" style="color:var(--dim)">#'+rk+'</div>';
+    var mv = S.lbKey==='value'?fmt(p.invVal):S.lbKey==='opened'?p.opened:S.lbKey==='best'?(p.bestE+' '+fmt(p.bestVal)):fmt(p.spent);
+    var sv = {value:'Inventory',opened:'Cases',best:'Best Drop',spent:'Spent'}[S.lbKey];
+    var sub = S.lbKey==='value'?p.opened+' opened':S.lbKey==='opened'?'$'+Math.floor(p.invVal)+' inv':S.lbKey==='best'?p.opened+' opened':p.opened+' cases';
+    html += '<div class="'+cls+'">'+rkEl+'<div class="lb-av">'+p.av+'</div><div class="lb-inf"><div class="lb-nm">'+p.name+(p.name==='YOU'?'<span class="you-tag">YOU</span>':'')+'</div><div class="lb-sb">'+sub+'</div></div><div class="lb-vl">'+mv+'<small>'+sv+'</small></div></div>';
+  }
+  $('lb-list').innerHTML = html;
+}
+
+// ═══════════════ LIVE FEED ═══════════════
+function startFeed() {
+  addFeedRow();
+  setInterval(addFeedRow, 3200 + Math.random()*2000);
+}
+function addFeedRow() {
+  var bw = {consumer:5,industrial:5,milspec:15,restricted:20,classified:25,covert:18,gold:10,jackpot:2};
+  var tot=0; for(var k in bw) tot+=bw[k];
+  var r=Math.random()*tot, rar='milspec';
+  for(var k in bw){r-=bw[k];if(r<=0){rar=k;break;}}
+  var pool=ITEMS.filter(function(i){return i.r===rar;});
+  var it=rand(pool), c=rand(CASES), user=rand(USERS), col=RC[rar];
+  var el=$('feed-list'), row=document.createElement('div');
+  row.className='feed-row'; row.style.borderColor=col; row.style.background=col+'0d';
+  row.innerHTML='<span style="font-weight:700;color:#fff">'+user+'</span> <span style="color:var(--dim)">got</span> <span style="font-weight:700;color:'+col+'">'+it.e+' '+it.name+'</span> <span style="color:var(--dim)">from '+c.em+'</span>';
+  el.insertBefore(row,el.firstChild);
+  while(el.children.length>20) el.removeChild(el.lastChild);
+}
+
+// ═══════════════ MISC BUTTONS ═══════════════
+if($('btn-add-funds')) $('btn-add-funds').addEventListener('click', function() {
+  S.bal += 500; updateUI(); sndFunds(); toast('💰 +$500 added!'); sparkle('#4caf50');
+});
+if($('btn-add-hdr')) $('btn-add-hdr').addEventListener('click', function() {
+  S.bal += 500; updateUI(); sndFunds(); toast('💰 +$500 added!'); sparkle('#4caf50');
+});
+if($('btn-rst-hdr')) $('btn-rst-hdr').addEventListener('click', function() {
+  if (!confirm('Reset everything?')) return;
+  if (S.pgIv) clearInterval(S.pgIv);
+  S = {bal:1000,keys:3,selCase:0,qty:1,inv:[],hist:[],pending:null,spinning:false,stats:{opened:0,spent:0,best:null},tuSel:[],histFilt:'all',mktListings:[],mktOrders:[],mktSub:'browse',lbKey:'value',bRounds:3,battleRunning:false,pgTf:'1h',pgSel:0,pgItems:[],pgHistories:{},pgIv:null,pgFiltered:[]};
+  pickCase(); updateUI(); renderTuSlots(); renderCases(); renderBSel(); toast('🔄 Reset!');
+});
+if($('btn-reset')) $('btn-reset').addEventListener('click', function() {
+  if (!confirm('Reset everything?')) return;
+  if (S.pgIv) clearInterval(S.pgIv);
+  S = {bal:1000,keys:3,selCase:0,qty:1,inv:[],hist:[],pending:null,spinning:false,stats:{opened:0,spent:0,best:null},tuSel:[],histFilt:'all',mktListings:[],mktOrders:[],mktSub:'browse',lbKey:'value',bRounds:3,battleRunning:false,pgTf:'1h',pgSel:0,pgItems:[],pgHistories:{},pgIv:null,pgFiltered:[]};
+  pickCase(); updateUI(); renderTuSlots(); renderCases(); renderBSel(); toast('🔄 Reset!');
+});
+
+// ═══════════════ SKIN INSPECT ═══════════════
+var inspectItem = null;
+var inspectInvIdx = -1;
+
+function openInspect(it, invIdx) {
+  inspectItem = it;
+  inspectInvIdx = invIdx !== undefined ? invIdx : -1;
+  var col = RC[it.r];
+
+  // Background glow
+  $('inspect-glow').style.background = col;
+  $('inspect-bg').style.background = 'radial-gradient(ellipse at 50% 30%,' + col + ',transparent 70%)';
+  $('inspect-icon').textContent = it.e;
+  $('inspect-name').textContent = it.name;
+  $('inspect-name').style.color = col;
+  $('inspect-rarity').textContent = RN[it.r] || it.r;
+  $('inspect-rarity').style.color = col;
+
+  // Badges
+  var badges = '';
+  badges += '<span class="insp-badge" style="color:'+col+';border-color:'+col+'44">'+it.wearFull+'</span>';
+  if (it.isST) badges += '<span class="insp-badge" style="color:orange;border-color:rgba(255,165,0,.4)">★ STATTRAK™</span>';
+  if (it.isSV) badges += '<span class="insp-badge" style="color:var(--gold);border-color:rgba(226,176,74,.4)">🏆 SOUVENIR</span>';
+  $('inspect-badges').innerHTML = badges;
+
+  // Stats
+  var wearScore = {FN:'0.00–0.07',MW:'0.07–0.15',FT:'0.15–0.38',WW:'0.38–0.45',BS:'0.45–1.00'}[it.wear] || '—';
+  $('inspect-stats').innerHTML =
+    '<div class="istat"><div class="istat-lbl">Float Value</div><div class="istat-val" style="color:'+col+'">' + it.fl + '</div></div>' +
+    '<div class="istat"><div class="istat-lbl">Wear Range</div><div class="istat-val">' + wearScore + '</div></div>' +
+    '<div class="istat"><div class="istat-lbl">Market Value</div><div class="istat-val" style="color:var(--gold2)">$' + it.val.toFixed(2) + '</div></div>' +
+    '<div class="istat"><div class="istat-lbl">Case Origin</div><div class="istat-val" style="font-size:12px">' + (it.caseName || '—') + '</div></div>';
+
+  // Float needle
+  setTimeout(function() {
+    var needle = $('inspect-needle');
+    if (needle) needle.style.left = (it.fl * 100).toFixed(2) + '%';
+  }, 100);
+
+  // Show/hide sell buttons based on ownership
+  var hasSellBtn = inspectInvIdx >= 0;
+  $('inspect-sell-btn').style.display = hasSellBtn ? '' : 'none';
+  $('inspect-list-btn').style.display = hasSellBtn ? '' : 'none';
+
+  $('inspect-ov').classList.add('show');
+
+  // Sound
+  playTone(440,'sine',.12,.2); playTone(550,'sine',.1,.18,.08); playTone(660,'sine',.08,.15,.16);
+}
+
+function closeInspect() {
+  $('inspect-ov').classList.remove('show');
+  inspectItem = null; inspectInvIdx = -1;
+}
+
+function initInspect() {
+  function safe(id, fn) { var el=$(''+id); if(el) el.addEventListener('click',fn); }
+  safe('inspect-close', closeInspect);
+  safe('inspect-close-btn2', closeInspect);
+  safe('inspect-ov', function(e){ if(e.target===$('inspect-ov')) closeInspect(); });
+  safe('inspect-sell-btn', function() {
+    if (inspectInvIdx < 0 || !inspectItem) return;
+    var it = inspectItem, i = inspectInvIdx;
+    closeInspect();
+    S.bal += it.val; S.inv.splice(i, 1);
+    updateUI(); renderInv(); sndSell();
+    toast('💰 Sold ' + it.name + ' for $' + it.val.toFixed(2));
+  });
+  safe('inspect-list-btn', function() {
+    if (inspectInvIdx < 0 || !inspectItem) return;
+    var i = inspectInvIdx;
+    closeInspect();
+    showPage('market');
+    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+    var mn = document.querySelector('.nav-item[data-page="market"]');
+    if(mn) mn.classList.add('active');
+    setTimeout(function() {
+      switchMktTab('sell');
+      document.querySelectorAll('.mkt-tab-btn').forEach(function(b){b.classList.remove('active');});
+      var sb = document.querySelector('.mkt-tab-btn[data-mkt="sell"]');
+      if(sb) sb.classList.add('active');
+      listItem(i);
+    }, 200);
+  });
+}
+
+// ═══════════════ MARKET NOTIF STACK ═══════════════
+var _notifQueue = [];
+var _notifActive = false;
+
+function pushMktNotif(type, icon, title, msg, price) {
+  _notifQueue.push({type:type, icon:icon, title:title, msg:msg, price:price});
+  if (!_notifActive) drainNotifQueue();
+}
+
+function drainNotifQueue() {
+  if (!_notifQueue.length) { _notifActive = false; return; }
+  _notifActive = true;
+  var n = _notifQueue.shift();
+  var stack = $('mkt-notif-stack');
+  var el = document.createElement('div');
+  el.className = 'mkt-notif ' + n.type;
+  el.innerHTML = '<div class="mn-icon">'+n.icon+'</div><div class="mn-body"><div class="mn-title">'+n.title+'</div><div class="mn-msg">'+n.msg+'</div></div><div class="mn-price">'+n.price+'</div>';
+  stack.appendChild(el);
+  // Limit stack to 4
+  while (stack.children.length > 4) stack.removeChild(stack.firstChild);
+  setTimeout(function() { el.classList.add('show'); }, 20);
+  setTimeout(function() {
+    el.classList.remove('show');
+    setTimeout(function() { if(el.parentNode) el.parentNode.removeChild(el); drainNotifQueue(); }, 400);
+  }, 4000);
+}
+
+// ═══════════════ INIT ═══════════════
+renderCases();
+renderChances();
+renderTuSlots();
+renderBSel();
+startFeed();
+pickCase();
+updateUI();
+initModalBtns();
+initInspect();
+</script>
+<!-- SKIN INSPECT MODAL -->
+<div class="inspect-ov" id="inspect-ov">
+  <div class="inspect-card" id="inspect-card">
+    <button class="inspect-close" id="inspect-close">✕</button>
+    <div class="inspect-bg" id="inspect-bg"></div>
+    <div class="inspect-body">
+      <div class="inspect-icon-wrap">
+        <div class="inspect-icon" id="inspect-icon">🔫</div>
+        <div class="inspect-glow" id="inspect-glow"></div>
+      </div>
+      <div class="inspect-info">
+        <div class="inspect-badges" id="inspect-badges"></div>
+        <div class="inspect-name" id="inspect-name"></div>
+        <div class="inspect-rarity" id="inspect-rarity"></div>
+        <div class="inspect-stats" id="inspect-stats"></div>
+        <div class="inspect-float-section">
+          <div class="inspect-float-label">FLOAT VALUE</div>
+          <div class="inspect-float-bar-wrap">
+            <div class="inspect-float-bar">
+              <div class="inspect-float-zones">
+                <div class="ifz" style="width:7%;background:#4caf50">FN</div>
+                <div class="ifz" style="width:8%;background:#8bc34a">MW</div>
+                <div class="ifz" style="width:23%;background:#ffc107">FT</div>
+                <div class="ifz" style="width:7%;background:#ff9800">WW</div>
+                <div class="ifz" style="width:55%;background:#f44336">BS</div>
+              </div>
+              <div class="inspect-float-needle" id="inspect-needle"></div>
+            </div>
+            <div class="inspect-float-num" id="inspect-float-num">0.0000</div>
+          </div>
+        </div>
+        <div class="inspect-actions">
+          <button class="inspect-btn inspect-sell-btn" id="inspect-sell-btn">💰 Sell</button>
+          <button class="inspect-btn inspect-list-btn" id="inspect-list-btn">💹 List on Market</button>
+          <button class="inspect-btn inspect-close-btn" id="inspect-close-btn2">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKET ACTIVITY NOTIF (stacked) -->
+<div class="mkt-notif-stack" id="mkt-notif-stack"></div>
+<div class="toast" id="toast"></div>
+</body>
+</html>
+
